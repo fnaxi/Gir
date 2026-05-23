@@ -30,6 +30,7 @@ GlobalItems
 {
 	"README.md",
 	".gitignore",
+	"InvaderZim/InvaderZim.lua"
 }
 
 architecture "x64"
