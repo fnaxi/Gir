@@ -1,0 +1,16 @@
+# CopyRight https://github.com/fnaxi. All Rights Reserved.
+
+
+Binaries/
+Intermediate/
+
+.vs/
+.vscode/
+.idea/
+
+*.sln
+*.sln.DotSettings
+*.sln.DotSettings.user
+
+*.csproj
+
