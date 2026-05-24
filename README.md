@@ -22,7 +22,7 @@
 
 ## About
 
-Invader zim - is a private, all-in-one Discord bot built in C# designed to help moderate and manage a community.
+Invader zim - is all-in-one Discord bot built in C# designed to help moderate and manage a community.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -35,11 +35,11 @@ git clone https://github.com/fnaxi/InvaderZim.git InvaderZim
 cd InvaderZim
 ```
 
-### 2. Run setup script
+### 2. Set bot token
 
-Run `GenerateProjectFiles.bat`
+Copy `InvaderZim/Config/Config.json` to `InvaderZim/bin/{Debug/Release}/net9.0/` and change field `Token` to the token you want to use.
 
-### 3. Open `InvaderZim.sln`
+### 3. Open solution
 
 Open `InvaderZim.sln` and build all the projects.
 
