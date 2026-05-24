@@ -1,16 +1,11 @@
 # CopyRight https://github.com/fnaxi. All Rights Reserved.
 
 
-Binaries/
-Intermediate/
+# TODO: Replace with Binaries/Intermediate
+InvaderZim/bin/
+InvaderZim/obj/
 
 .vs/
 .vscode/
 .idea/
-
-*.sln
-*.sln.DotSettings
-*.sln.DotSettings.user
-
-*.csproj
 

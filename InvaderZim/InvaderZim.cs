@@ -1,10 +1,10 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-using System;
+using DSharpPlus;
 
 namespace InvaderZim;
 
-public abstract class CInvaderZim
+public class CInvaderZim
 {
 	public static Int32 Main()
 	{
