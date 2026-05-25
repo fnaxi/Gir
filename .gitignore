@@ -2,10 +2,12 @@
 
 
 # TODO: Replace with Binaries/Intermediate
-InvaderZim/bin/
-InvaderZim/obj/
+**/bin/
+**/obj/
 
 .vs/
 .vscode/
 .idea/
+
+*.sln.DotSettings.user
 
