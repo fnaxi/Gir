@@ -21,16 +21,4 @@ public class CTestCommands : BaseCommandModule
 		};
 		await Context.Channel.SendMessageAsync(Embed);
 	}
-
-	[Command("embed")] [RequireUserPermissions(Permissions.Administrator)]
-	public async Task Embed(CommandContext Context)
-	{
-		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
-		{
-			Title = "FEEL HONORED!",
-			Description = "- I have come to accept your feelings for me. I congratulate you for acknowledging my superiority in choosing me as your love-pig. FEEL HONORED!",
-			Color = YellowGreen
-		};
-		await Context.Channel.SendMessageAsync(Embed);
-	}
 }

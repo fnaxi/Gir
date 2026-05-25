@@ -2,7 +2,7 @@
 
 namespace InvaderZim.ID;
 
-public class CRole
+public static class CRole
 {
 	public const UInt64 Booster = 1507661447121993810;
 	

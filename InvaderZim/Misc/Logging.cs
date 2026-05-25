@@ -1,6 +1,8 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-namespace InvaderZim;
+using System.Diagnostics;
+
+namespace InvaderZim.Misc;
 
 public enum ELogVerbosity
 {
@@ -65,7 +67,7 @@ public static class CLog
 		
 		if (!VerbosityInfo.TryGetValue(LogVerbosity, out SLogVerbosityInfo CurrentVerbosityInfo))
 		{
-			CheckNoEntry();
+			Debug.Assert(false);
 		}
 		
 		string Timestamp = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss zzz");

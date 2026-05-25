@@ -1,6 +1,7 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
 global using static InvaderZim.Commands.CCommandUtils;
+using System.Diagnostics;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using InvaderZim.ID;
@@ -13,7 +14,7 @@ public class CCommandUtils
 	{
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
 		{
-			Title = "People... they're the worst",
+			Title = "You Earth creatures are strange and smelly",
 			Description = $"You're not the one who can ask his honor zim{CEmoji.GirBlep} for something like that!",
 			Color = YellowGreen
 		};
@@ -22,6 +23,9 @@ public class CCommandUtils
 	
 	public static bool CanModerate(CommandContext Context)
 	{
-		return Context.Member.Roles.Any(role => role.Id is CRole.Admin or CRole.Moderator);
+		bool bAdmin = false; // TODO: (Context.Member.Permissions & Permissions.Administrator) != 0
+
+		Debug.Assert(Context.Member != null);
+		return bAdmin || Context.Member.Roles.Any(role => role.Id is CRole.Admin or CRole.Moderator);
 	}
 }
