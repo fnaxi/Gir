@@ -28,22 +28,15 @@ public enum ELogVerbosity
 /**
  * Information how the log verbosity is represented in logger (e.g., text color or tag).
  */
-public struct SLogVerbosityInfo
+public struct SLogVerbosityInfo()
 {
-	public SLogVerbosityInfo()
-	{
-		Tag = "NONE";
-		TextColor = ConsoleColor.White;
-		BackgroundColor = ConsoleColor.Black;
-	}
-
 	/** Specifies a tag for log verbosity inside []. */
-	public string Tag { get; set; }
+	public string Tag { get; init; } = "NONE";
 
 	/** Specifies colors for background and text. */
-	public ConsoleColor TextColor { get; set; }
+	public ConsoleColor TextColor { get; init; } = ConsoleColor.White;
 
-	public ConsoleColor BackgroundColor { get; set; }
+	public ConsoleColor BackgroundColor { get; } = ConsoleColor.Black;
 };
 
 // TODO: Move to Microsoft.Extensions.Logging

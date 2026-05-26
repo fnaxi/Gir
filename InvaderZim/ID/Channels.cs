@@ -2,7 +2,7 @@
 
 namespace InvaderZim.ID;
 
-public static class CChannel // TODO: Move IDs to Config.json
+public static class CChannel
 {
 	public const UInt64 Test = 1508106982949916752;
 	
@@ -11,7 +11,7 @@ public static class CChannel // TODO: Move IDs to Config.json
 	----------------------------------------------------------------------------*/
 	public const UInt64 Welcome = 1507653496558714882;
 	
-	public const UInt64 Info = 1507691793414881280; // might be redundant
+	public const UInt64 Info = 1507691793414881280;
 	public const UInt64 Rules = 1507692752803201166;
 	public const UInt64 News = 1507693345865072680;
 	

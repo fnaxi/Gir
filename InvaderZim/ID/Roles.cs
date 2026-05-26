@@ -6,8 +6,6 @@ public static class CRole
 {
 	public const UInt64 Booster = 1507661447121993810;
 	
-	public const UInt64 Bot = 1507659449882513528;
-	
 	public const UInt64 Admin = 1507693762011332608;
 	public const UInt64 Moderator = 1507661260957945956;
 	
@@ -16,8 +14,6 @@ public static class CRole
 	public const UInt64 Blue = 1507660878617514074;
 	public const UInt64 Yellow = 1507659755072782396;
 	public const UInt64 Orange = 1507661151146868816;
-	
-	public const UInt64 Muted = 1507694797060702218;
 	
 	public const UInt64 Member = 1507654293874806795;
 	

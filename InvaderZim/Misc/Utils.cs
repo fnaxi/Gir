@@ -1,7 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
 global using static InvaderZim.Misc.CUtils;
-using System.Diagnostics;
 using DSharpPlus.Entities;
 
 namespace InvaderZim.Misc;

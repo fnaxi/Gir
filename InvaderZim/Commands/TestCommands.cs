@@ -16,9 +16,9 @@ public class CTestCommands : BaseCommandModule
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
 		{
 			Title = "Emojis test",
-			Description = $"{CEmoji.GirDance} \n {CEmoji.GirBlep} \n {CEmoji.GirDress} \n {CEmoji.GirLaugh} \n {CEmoji.GirLike}",
+			Description = $"gir_dance: {CEmoji.GirDance} \n gir_blep: {CEmoji.GirBlep} \n gir_dress: {CEmoji.GirDress}",
 			Color = YellowGreen
 		};
-		await Context.Channel.SendMessageAsync(Embed);
+		await Context.RespondAsync(Embed);
 	}
 }

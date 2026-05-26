@@ -5,6 +5,7 @@ using System.Diagnostics;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using InvaderZim.ID;
+using InvaderZim.Misc;
 
 namespace InvaderZim.Commands;
 
@@ -27,5 +28,22 @@ public class CCommandUtils
 
 		Debug.Assert(Context.Member != null);
 		return bAdmin || Context.Member.Roles.Any(role => role.Id is CRole.Admin or CRole.Moderator);
+	}
+
+	public static bool SentInBotChannel(CommandContext Context)
+	{
+		return Context.Channel.Id is not (CChannel.BotChat or CChannel.Test);
+	}
+
+	public static async Task<bool> IsTargetingBotOrSelf(CommandContext Context, DiscordMember Member)
+	{
+		Debug.Assert(Context.Member != null);
+		if (Member.IsBot || Member.Id == Context.Client.CurrentUser.Id || Member.Id == Context.Member.Id)
+		{
+			await Context.RespondAsync(RandomString(CQuote.BotOrSelfBan));
+			return true;
+		}
+
+		return false;
 	}
 }

@@ -1,27 +1,28 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
+using System.Text.RegularExpressions;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using InvaderZim.Commands;
 using InvaderZim.Config;
-using InvaderZim.ID;
 using InvaderZim.Misc;
 
 namespace InvaderZim;
 
 public static class CInvaderZim
 {
+	// TODO: Fix warnings here
 	private static DiscordClient Client { get; set; }
 	private static CommandsNextExtension Commands { get; set; }
-	
+
 	private static CConfig Config;
 	private static DiscordConfiguration DisConfig;
 	
 	public static async Task Main()
 	{
-		Config = new CConfigParser().Parse();
+		Config = CConfigParser.Parse();
 		DisConfig = new DiscordConfiguration
 		{
 			Intents = DiscordIntents.All,
@@ -44,7 +45,8 @@ public static class CInvaderZim
 	private static async Task Client_OnReady(DiscordClient Sender, ReadyEventArgs Args)
 	{
 		CLog.Info("Zim is ready!");
-
+		
+		#if TODO
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
 		{
 			Title = "Zim is eating waffles again!",
@@ -54,6 +56,7 @@ public static class CInvaderZim
 		
 		DiscordChannel Channel = await Sender.GetChannelAsync(CChannel.Test);
 		await Channel.SendMessageAsync(Embed);
+		#endif
 		
 		await StartStatusRotation(Sender);
 	}
@@ -62,11 +65,18 @@ public static class CInvaderZim
 	{
 		if (Args.Author.IsBot) return;
 		
-		// TODO: Revisit this. bot should react to mentioning "zim" in a message like "hey zim!"
-		// Args.Message.Content.StartsWith(Config.Prefix)
-		if (Args.Message.MentionedUsers.Any(user => user.Id == Sender.CurrentUser.Id))
+		if (Args.Message.MentionedUsers.Any(uz => uz.Id == Sender.CurrentUser.Id))
+			// TODO: Bot should react to mentioning "zim" in a message
 		{
-			await Args.Message.RespondAsync(RandomString(CQuote.Mention));
+			string MsgContent = Args.Message.Content;
+			if (MsgContent.Contains("fuck") || MsgContent.Contains("shut up"))
+			{
+				await Args.Message.DeleteAsync();
+			}
+			else if (Regex.IsMatch(MsgContent, @"\b(hi|hey|hello)\b", RegexOptions.IgnoreCase))
+			{
+				await Args.Message.RespondAsync(RandomString(CQuote.Hello));
+			}
 		}
 	}
 	
@@ -91,7 +101,7 @@ public static class CInvaderZim
 		{
 			StringPrefixes = [Prefix],
 			
-			EnableMentionPrefix = true,
+			EnableMentionPrefix = false,
 			EnableDms = false,
 			
 			EnableDefaultHelp = false
@@ -99,9 +109,10 @@ public static class CInvaderZim
 		Commands = Client.UseCommandsNext(CommandsConfig);
 
 		RegisterCommandModule<CMiscCommands>();
-		RegisterCommandModule<CTestCommands>();
 		RegisterCommandModule<CModerationCommands>();
-		
+		RegisterCommandModule<CEntertainCommands>();
+		RegisterCommandModule<CTestCommands>();
+
 		Commands.CommandErrored += Commands_OnCommandErrored;
 	}
 	
@@ -112,14 +123,13 @@ public static class CInvaderZim
 		DiscordEmoji MonsterEmoji = DiscordEmoji.FromName(Sender, ":cocktail:");
 		DiscordEmoji ConquestEmoji = DiscordEmoji.FromName(Sender, ":earth_americas:");
 
-		UInt16 UpdateTime = 30;
-		List<string> Statuses = new List<string>
-		{
+		const UInt16 UpdateTime = 30;
+		List<string> Statuses =
+		[
 			$"{WaffleEmoji} Eating tasty waffles",
 			$"{MonsterEmoji} Drinking a white Monster",
 			$"{ConquestEmoji} Conquering the world!"
-			// TODO: More statuses
-		};
+		];
 
 		CLog.Info($"Status rotation loop started (updating every {UpdateTime} seconds)");
 		while ( !(Sender.Ping > 3000) ) // TODO: Ambitious

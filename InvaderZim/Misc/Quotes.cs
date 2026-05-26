@@ -4,6 +4,13 @@ namespace InvaderZim.Misc;
 
 public class CQuote
 {
+	public static readonly List<string> Hello = new()
+	{
+		"Hi",
+		"Hi! Obey me, or face doom!",
+		"Hey",
+		"Hello"
+	};
 	public static readonly List<string> Mention = new()
 	{
 		"I’m gonna rule Earth someday, you’ll see!",
@@ -77,6 +84,20 @@ public class CQuote
 		"Prepare your bladder for imminent release!",
 		"I am ZIM! And you will obey the fist!",
 		"LIES! BIG, FILTHY, EARTH BOY, LIES!",
+	};
+	public static readonly List<string> Waffles = new()
+	{
+		"Thanks, Earth pig!",
+		"Thanks for the waffles, Earth pig!",
+		"Guess who made WAAAAFFLES! THANKS",
+		"Thanks! These waffles are SOOOOOO addictive!"
+	};
+	public static readonly List<string> Tacos = new()
+	{
+		"Thanks, Earth pig!",
+		"Thanks for the tacos, Earth pig!",
+		"I need tacos or I will explode! That happens to me sometimes",
+		"Thanks! These tacos are SOOOOOO addictive!"
 	};
 	public static readonly List<string> Ban = new()
 	{
