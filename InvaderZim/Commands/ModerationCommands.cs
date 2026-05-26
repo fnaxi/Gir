@@ -1,6 +1,7 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
 using System.Diagnostics;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -11,6 +12,8 @@ namespace InvaderZim.Commands;
 
 public class CModerationCommands : BaseCommandModule
 {
+	private const Int32 TemporaryResponseTime = 5; // in seconds
+	
 	[Command("mute")]
 	[Description("Mutes the specified member")]
 	public async Task Mute(CommandContext Context, 
@@ -117,7 +120,7 @@ public class CModerationCommands : BaseCommandModule
 			DiscordMessage Response = await Context.RespondAsync($"Successfully deleted {MessagesToDelete.Count} messages in {Channel.Mention} channel {CEmoji.GirBlep}");
 			if (bContextChannel)
 			{
-				await Task.Delay(TimeSpan.FromSeconds(3));
+				await Task.Delay(TimeSpan.FromSeconds(TemporaryResponseTime));
 				await Response.DeleteAsync();
 			}
 		}
@@ -148,7 +151,7 @@ public class CModerationCommands : BaseCommandModule
 			DiscordMessage Response = await Context.RespondAsync($"I cannot delete messages older than 14 days due to Discord restrictions {CEmoji.GirBlep}");
 			if (bContextChannel)
 			{
-				await Task.Delay(TimeSpan.FromSeconds(3));
+				await Task.Delay(TimeSpan.FromSeconds(5));
 				await Response.DeleteAsync();
 				await Context.Message.DeleteAsync();
 				return;
@@ -168,19 +171,121 @@ public class CModerationCommands : BaseCommandModule
 			DiscordMessage Response = await Context.RespondAsync($"Successfully deleted {MessagesToDelete.Count} messages in {Channel.Mention} channel {CEmoji.GirBlep}");
 			if (bContextChannel)
 			{
-				await Task.Delay(TimeSpan.FromSeconds(3));
+				await Task.Delay(TimeSpan.FromSeconds(TemporaryResponseTime));
 				await Response.DeleteAsync();
 			}
 		}
 
-		// TODO: revisit this and if (CutOff < FourteenDaysAgo) condition above
 		if (bContextChannel)
 		{
 			await Context.Message.DeleteAsync();
 		}
 	}
 
-	// TODO: reap(member, reason)
+	[Command("reap")]
+	[Description("Grim-reaps the specified member. Automatically issues a ban after reaching 3 warnings")]
+	public async Task Warn(CommandContext Context,
+		[Description("The member to grim-reap")]
+		DiscordMember Member,
+		[Description("The reason of the grim-reap")]
+		string Reason = "No reason provided")
+	{
+		if (!CanModerate(Context))
+		{
+			await NoRights(Context);
+			return;
+		}
+
+		if (IsTargetingBotOrSelf(Context, Member).Result) return;
+
+		DiscordRole WarnedOnceRole = Context.Guild.GetRole(CRole.WarnedOnce);
+		DiscordRole WarnedTwiceRole = Context.Guild.GetRole(CRole.WarnedTwice);
+
+		Int32 WarnsCount;
+		if (Member.Roles.Contains(WarnedOnceRole))
+		{
+			await Member.RevokeRoleAsync(WarnedOnceRole);
+			await Member.GrantRoleAsync(WarnedTwiceRole);
+
+			WarnsCount = 2;
+		}
+		else if (Member.Roles.Contains(WarnedTwiceRole))
+		{
+			await Ban(Context, Member, $"Got third warning. {Reason}");
+
+			WarnsCount = 3;
+		}
+		else
+		{
+			await Member.GrantRoleAsync(WarnedOnceRole);
+
+			WarnsCount = 1;
+		}
+
+		string PunishmentSummary = WarnsCount switch
+		{
+			1 => "was warned first time",
+			_ => "was warned second time"
+		};
+
+		if (WarnsCount != 3) // Response is handled in Ban() method
+		{
+			Debug.Assert(Context.Member != null);
+			DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
+			{
+				Title = $"{RandomString(CQuote.Ban)} {CEmoji.GirBlep}",
+				Description =
+					$"Member {Member.DisplayName} {PunishmentSummary} by {Context.Member.DisplayName}" +
+					$"\n\n Reason: {Reason}",
+				Color = YellowGreen
+			};
+			await Context.RespondAsync(Embed);
+		}
+	}
+
+	[Command("unwarn")]
+	[Description("Removes a warning from the member")]
+	[RequirePermissions(Permissions.Administrator)]
+	public async Task Unwarn(CommandContext Context, 
+		[Description("The member to remove warning from")] DiscordMember Member)
+	{
+		// TODO: we already have RequirePermissions(Permissions.Administrator)
+		if (!CanModerate(Context))
+		{
+			await NoRights(Context);
+			return;
+		}
+
+		if (IsTargetingBotOrSelf(Context, Member).Result) return;
+
+		DiscordRole WarnedOnceRole = Context.Guild.GetRole(CRole.WarnedOnce);
+		DiscordRole WarnedTwiceRole = Context.Guild.GetRole(CRole.WarnedTwice);
+
+		Int32 WarnsCount;
+		if (Member.Roles.Contains(WarnedOnceRole))
+		{
+			await Member.RevokeRoleAsync(WarnedOnceRole);
+		}
+		else if (Member.Roles.Contains(WarnedTwiceRole))
+		{
+			await Member.RevokeRoleAsync(WarnedTwiceRole);
+			await Member.GrantRoleAsync(WarnedOnceRole);
+		}
+		else
+		{
+			// TODO: "User does not have any warnings!"
+		}
+
+		Debug.Assert(Context.Member != null);
+		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
+		{
+			Title = $"{RandomString(CQuote.Ban)} {CEmoji.GirBlep}",
+			Description = 
+				$"Member {Member.DisplayName} got unwarned by {Context.Member.DisplayName}",
+			Color = YellowGreen
+		};
+		await Context.RespondAsync(Embed);
+	}
 	
 	[Command("kick")]
 	[Description("Kicks the specified member")]
@@ -243,7 +348,7 @@ public class CModerationCommands : BaseCommandModule
 	[Command("unban")]
 	[Description("Removes a ban from specified member")]
 	public async Task UnBan(CommandContext Context, 
-		[Description("The member to unban")] DiscordMember Member)
+		[Description("The member to unban")] DiscordUser User)
 	{
 		if (!CanModerate(Context))
 		{
@@ -251,8 +356,17 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (IsTargetingBotOrSelf(Context, Member).Result) return;
+		// TODO: can't pass DiscordUser here
+		// if (IsTargetingBotOrSelf(Context, User).Result) return;
 		
-		// TODO: unban command
+		DiscordBan? Ban = await Context.Guild.GetBanAsync(User);
+		if (Ban == null)
+		{
+			await Context.RespondAsync($"{User.Username} is not currently banned on the server {CEmoji.ZimAngry}");
+			return;
+		}
+			
+		await Context.Guild.UnbanMemberAsync(User);
+		await Context.RespondAsync($"Successfully unbanned {User.Username}");
 	}
 }

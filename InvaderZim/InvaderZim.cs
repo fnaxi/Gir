@@ -69,7 +69,8 @@ public static class CInvaderZim
 			// TODO: Bot should react to mentioning "zim" in a message
 		{
 			string MsgContent = Args.Message.Content;
-			if (MsgContent.Contains("fuck") || MsgContent.Contains("shut up"))
+			if (MsgContent.Contains("fuck") || MsgContent.Contains("shut up") || MsgContent.Contains("touch yourself") || MsgContent.Contains("touch your body") ||
+			    MsgContent.Contains("touch urself") || MsgContent.Contains("stupud") || MsgContent.Contains("stupid") || MsgContent.Contains("shit") )
 			{
 				await Args.Message.DeleteAsync();
 			}

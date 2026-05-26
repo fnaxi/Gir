@@ -47,10 +47,9 @@ public class CMiscCommands : BaseCommandModule
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
 		{
 			Title = $"User Info - {Member.DisplayName}",
-			Color = YellowGreen
+			Color = Member.Color,
 		};
 		Embed.WithThumbnail(Member.AvatarUrl);
-		Embed.WithColor(Member.Color);
 
 		Embed.AddField($"{CEmoji.GirDress} ID", $"{Member.Id}", true);
 		Embed.AddField(":date: Account Created", $"{Member.CreationTimestamp:D}", true);
@@ -88,9 +87,8 @@ public class CMiscCommands : BaseCommandModule
 		DiscordEmbedBuilder FinalEmbed = new DiscordEmbedBuilder()
 		{
 			Title = "Ping Status",
-			Color = YellowGreen
+			Color = WebsocketPing < 150 ? DiscordColor.Green : DiscordColor.Orange
 		};
-		FinalEmbed.WithColor(WebsocketPing < 150 ? DiscordColor.Green : DiscordColor.Orange);
 		
 		FinalEmbed.AddField($"{CEmoji.BmoDance} Bot Latency", $"`{WebsocketPing}ms`", true);
 		FinalEmbed.AddField($"{CEmoji.Alien} Message Latency", $"`{MessagePing}ms`", true);
