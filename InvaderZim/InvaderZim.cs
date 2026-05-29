@@ -23,6 +23,7 @@ public class CInvaderZim
 	private CGreetingService GreetingService = null!;
 	private CTalkingService TalkingService = null!;
 	private CActivityService ActivityService = null!;
+	private CColorRolesService ColorRolesService = null!;
 	
 	/*----------------------------------------------------------------------------
 		System client services
@@ -43,14 +44,10 @@ public class CInvaderZim
 			Token = Config.Token,
 			TokenType = TokenType.Bot,
 			AutoReconnect = true,
-			
-			// TODO: Replace with true later
-			LogUnknownEvents = false
+			LogUnknownEvents = false // TODO: Replace with true later
 		};
-		
+
 		Client = new DiscordClient(DisConfig);
-		
-		// TODO: Modlog (deleted/edited messages, etc.)
 
 		SetupCommands(Config.Prefix);
 		SetupServices();
@@ -66,6 +63,9 @@ public class CInvaderZim
 		GreetingService = new CGreetingService(Client);
 		TalkingService = new CTalkingService(Client);
 		ActivityService = new CActivityService(Client);
+		ColorRolesService = new CColorRolesService(Client);
+		
+		// TODO: Modlog (deleted/edited messages, etc.)
 		
 		// Client.System
 		ConnectionStatusService = new CConnectionStatusService(Client);
@@ -91,6 +91,7 @@ public class CInvaderZim
 		RegisterCommandModule<CMiscCommands>();
 		RegisterCommandModule<CModerationCommands>();
 		RegisterCommandModule<CEntertainCommands>();
+		RegisterCommandModule<CManagementCommands>();
 		RegisterCommandModule<CTestCommands>();
 	}
 	

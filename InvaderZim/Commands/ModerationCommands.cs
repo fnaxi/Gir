@@ -12,13 +12,11 @@ namespace InvaderZim.Commands;
 
 public class CModerationCommands : BaseCommandModule
 {
-	private const Int32 TemporaryResponseTime = 5; // in seconds
-	
 	[Command("mute")]
 	[Description("Mutes the specified member")]
 	public async Task Mute(CommandContext Context, 
 		[Description("The member to mute")] DiscordMember Member,
-		[Description("Time of the mute in minutes")] UInt32 Duration = 30, // TODO: pass in format 1h30m15s
+		[Description("Time of the mute up to 28 days (e.g., 1h30m, 10m5s)")] string Time,
 		[Description("The reason of the mute")] string Reason = "No reason provided")
 	{
 		if (!CanModerate(Context))
@@ -27,9 +25,15 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (IsTargetingBotOrSelf(Context, Member).Result) return;
+		if (await IsTargetingBotOrSelf(Context, Member)) return;
 		
-		DateTimeOffset TimeoutTime = DateTimeOffset.UtcNow.AddMinutes(Duration);
+		DateTimeOffset TimeoutTime = DateTimeOffset.UtcNow.Subtract(ParseTime(Time));
+		if ( (DateTimeOffset.UtcNow - TimeoutTime).TotalDays > 28 )
+		{
+			await Context.RespondAsync("Mute time cannot be longer than 28 days!");
+			return;
+		}
+		
 		await Member.TimeoutAsync(TimeoutTime, Reason);
 		
 		Debug.Assert(Context.Member != null);
@@ -37,7 +41,7 @@ public class CModerationCommands : BaseCommandModule
 		{
 			Title = $"{RandomString(CQuote.Ban)}",
 			Description = 
-				$"Member {Member.DisplayName} was muted for {Duration} minute{(Duration == 1 ? "" : "s")} by {Context.Member.DisplayName} {CEmoji.GirBlep}" +
+				$"Member {Member.DisplayName} was muted for {Time} by {Context.Member.DisplayName} {CEmoji.GirBlep}" +
 				$"\n\n Reason: {Reason}",
 			Color = YellowGreen
 		};
@@ -55,7 +59,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 		
-		if (IsTargetingBotOrSelf(Context, Member).Result) return;
+		if (await IsTargetingBotOrSelf(Context, Member)) return;
 
 		if (!Member.CommunicationDisabledUntil.HasValue || Member.CommunicationDisabledUntil.Value <= DateTimeOffset.UtcNow)
 		{
@@ -63,7 +67,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 		
-		await Member.TimeoutAsync(null); // TODO: reason
+		await Member.TimeoutAsync(null);
 		
 		Debug.Assert(Context.Member != null);
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
@@ -78,7 +82,7 @@ public class CModerationCommands : BaseCommandModule
 	[Command("purge")]
 	[Description("Purges specified messages count in a channel")]
 	public async Task Purge(CommandContext Context,
-		[Description("Count of the messages to purge")] Int32 MessageCount,
+		[Description("Count of the messages (up to 99) to purge")] Int32 MessageCount,
 		[Description("The channel to purge messages in")] DiscordChannel? Channel = null)
 	{
 		if (!CanModerate(Context))
@@ -93,6 +97,7 @@ public class CModerationCommands : BaseCommandModule
 			// Include a message that triggered the execution
 			MessageCount++;
 		}
+		Debug.Assert(Channel != null);
 		
 		if (MessageCount is 0 or > 100)
 		{
@@ -132,7 +137,7 @@ public class CModerationCommands : BaseCommandModule
 	[Command("prune")]
 	[Description("Prunes messages up to a specific age in a channel (max 100 per request)")]
 	public async Task Prune(CommandContext Context,
-		[Description("Age of messages to purge (e.g., 1h30m, 10m5s)")] string Time,
+		[Description("Age of messages (up to 14 days) to purge (e.g., 1h30m, 10m5s)")] string Time,
 		[Description("The channel to prune messages in")] DiscordChannel? Channel = null)
 	{
 		if (!CanModerate(Context))
@@ -142,6 +147,7 @@ public class CModerationCommands : BaseCommandModule
 		}
 
 		bool bContextChannel = IsContextChannel(Context, ref Channel);
+		Debug.Assert(Channel != null);
 
 		DateTimeOffset CutOff = DateTimeOffset.UtcNow.Subtract(ParseTime(Time));
 		DateTimeOffset FourteenDaysAgo = DateTimeOffset.UtcNow.AddDays(-14);
@@ -156,7 +162,7 @@ public class CModerationCommands : BaseCommandModule
 				return;
 			}
 		}
-
+		
 		IReadOnlyList<DiscordMessage>? Messages = await Channel.GetMessagesAsync(100);
 		List<DiscordMessage> MessagesToDelete = Messages
 			.Where(m => m.Id != Context.Message.Id)
@@ -193,7 +199,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (IsTargetingBotOrSelf(Context, Member).Result) return;
+		if (await IsTargetingBotOrSelf(Context, Member)) return;
 
 		DiscordRole WarnedOnceRole = Context.Guild.GetRole(CRole.WarnedOnce);
 		DiscordRole WarnedTwiceRole = Context.Guild.GetRole(CRole.WarnedTwice);
@@ -253,12 +259,11 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (IsTargetingBotOrSelf(Context, Member).Result) return;
+		if (await IsTargetingBotOrSelf(Context, Member)) return;
 
 		DiscordRole WarnedOnceRole = Context.Guild.GetRole(CRole.WarnedOnce);
 		DiscordRole WarnedTwiceRole = Context.Guild.GetRole(CRole.WarnedTwice);
 
-		Int32 WarnsCount;
 		if (Member.Roles.Contains(WarnedOnceRole))
 		{
 			await Member.RevokeRoleAsync(WarnedOnceRole);
@@ -296,7 +301,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (IsTargetingBotOrSelf(Context, Member).Result) return;
+		if (await IsTargetingBotOrSelf(Context, Member)) return;
 		
 		await Member.RemoveAsync(Reason);
 		
@@ -324,7 +329,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (IsTargetingBotOrSelf(Context, Member).Result) return;
+		if (await IsTargetingBotOrSelf(Context, Member)) return;
 
 		await Context.Guild.BanMemberAsync(Member);
 		
@@ -352,7 +357,7 @@ public class CModerationCommands : BaseCommandModule
 		}
 
 		// TODO: can't pass DiscordUser here
-		// if (IsTargetingBotOrSelf(Context, User).Result) return;
+		// if (await IsTargetingBotOrSelf(Context, User)) return;
 		
 		DiscordBan? Ban = await Context.Guild.GetBanAsync(User);
 		if (Ban == null)

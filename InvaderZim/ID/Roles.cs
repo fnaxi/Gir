@@ -10,8 +10,9 @@ public static class CRole
 	public const UInt64 Moderator = 1507661260957945956;
 	
 	public const UInt64 Red = 1507660551650545684;
-	public const UInt64 Green = 1507660945428582430;
+	public const UInt64 Purple = 1509655636064079872;
 	public const UInt64 Blue = 1507660878617514074;
+	public const UInt64 Green = 1507660945428582430;
 	public const UInt64 Yellow = 1507659755072782396;
 	public const UInt64 Orange = 1507661151146868816;
 	

@@ -15,23 +15,32 @@ public class CConnectionStatusService
 	{
 		Client = InClient;
 		Client.Ready += Client_OnReady;
+		Client.GuildDownloadCompleted += Client_OnGuildDownloadCompleted;
 	}
-	
-	private async Task Client_OnReady(DiscordClient Sender, ReadyEventArgs Args)
+
+	private Task Client_OnReady(DiscordClient Sender, ReadyEventArgs Args)
 	{
 		CLog.Info("Zim is ready!");
 		
-		// TODO: remove later
+		#if TODO
+		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
 		{
-			DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
-			{
-				Title = "Zim is eating waffles again!",
-				Description = "Prepare your bladder for imminent release!",
-				Color = YellowGreen
-			};
+			Title = "Gir is eating waffles again!",
+			Description = "Prepare your bladder for imminent release!",
+			Color = YellowGreen
+		};
 
-			DiscordChannel Channel = await Sender.GetChannelAsync(CChannel.Test);
-			await Channel.SendMessageAsync(Embed);
-		}
+		DiscordChannel Channel = await Sender.GetChannelAsync(CChannel.Test);
+		await Channel.SendMessageAsync(Embed);
+		#endif
+		
+		return Task.CompletedTask;
+	}
+	
+	private Task Client_OnGuildDownloadCompleted(DiscordClient Sender, GuildDownloadCompletedEventArgs Args)
+	{
+		CLog.Info("Guild download completed");
+		
+		return Task.CompletedTask;
 	}
 }

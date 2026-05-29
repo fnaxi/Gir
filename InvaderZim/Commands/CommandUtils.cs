@@ -11,8 +11,10 @@ using InvaderZim.Misc;
 
 namespace InvaderZim.Commands;
 
-public class CCommandUtils
+public static class CCommandUtils
 {
+	public const Int32 TemporaryResponseTime = 5; // in seconds
+	
 	public static async Task NoRights(CommandContext Context)
 	{
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
@@ -59,7 +61,7 @@ public class CCommandUtils
 		return false;
 	}
 	
-	public static TimeSpan ParseTime(string Input) // TODO: fix time should be passed in ""
+	public static TimeSpan ParseTime(string Input)
 	{
 		TimeSpan Time = TimeSpan.Zero;
 		

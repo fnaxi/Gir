@@ -38,12 +38,13 @@ public class CMiscCommands : BaseCommandModule
 		[Description("The user to look up. Defaults to yourself if left blank")] DiscordMember? Member = null)
 	{
 		Member ??= Context.Member;
+		Debug.Assert(Member != null);
 		
 		List<string> Roles = Member.Roles
 			.Where(r => r.Id != Context.Guild.Id)
 			.Select(r => r.Mention).ToList();
-		string RolesText = Roles.Any() ? string.Join(", ", Roles) : "None";
 		
+		string RolesText = Roles.Count != 0 ? string.Join(", ", Roles) : "None";
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
 		{
 			Title = $"User Info - {Member.DisplayName}",
@@ -82,7 +83,7 @@ public class CMiscCommands : BaseCommandModule
 		DateTime EndTime = DateTime.UtcNow;
 		
 		Int32 WebsocketPing = Context.Client.Ping;
-		Int32 MessagePing = (Int32)(EndTime - StartTime).TotalMilliseconds;
+		Int32 ResponsePig = (Int32)(EndTime - StartTime).TotalMilliseconds;
 		
 		DiscordEmbedBuilder FinalEmbed = new DiscordEmbedBuilder()
 		{
@@ -91,7 +92,7 @@ public class CMiscCommands : BaseCommandModule
 		};
 		
 		FinalEmbed.AddField($"{CEmoji.BmoDance} Bot Latency", $"`{WebsocketPing}ms`", true);
-		FinalEmbed.AddField($"{CEmoji.Alien} Message Latency", $"`{MessagePing}ms`", true);
+		FinalEmbed.AddField($"{CEmoji.Alien} Response Latency", $"`{ResponsePig}ms`", true);
 
 		Debug.Assert(Context.Member != null);
 		FinalEmbed.WithFooter($"Requested by {Context.Member.DisplayName}", Context.Member.AvatarUrl);
@@ -106,10 +107,13 @@ public class CMiscCommands : BaseCommandModule
 	public async Task Shutdown(CommandContext Context)
 	{
 		if (SentInBotChannel(Context)) return;
-		
-		await Context.RespondAsync("Shutting down...");
+
+		DiscordMessage Response = await Context.RespondAsync("Shutting down...");
 
 		await Context.Client.DisconnectAsync();
 		Environment.Exit(0);
+		
+		await Task.Delay(TimeSpan.FromSeconds(TemporaryResponseTime));
+		await Response.DeleteAsync();
 	}
 }
