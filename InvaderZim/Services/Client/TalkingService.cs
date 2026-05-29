@@ -9,10 +9,8 @@ namespace InvaderZim.Services.Client;
 
 public class CTalkingService
 {
-	private readonly DiscordClient Client;
-	public CTalkingService(DiscordClient InClient)
+	public CTalkingService(DiscordClient Client)
 	{
-		Client = InClient;
 		Client.MessageCreated += Client_OnMessageCreated;
 	}
 	

@@ -24,6 +24,7 @@ public class CInvaderZim
 	private CTalkingService TalkingService = null!;
 	private CActivityService ActivityService = null!;
 	private CColorRolesService ColorRolesService = null!;
+	private CModerationLogService ModerationLogService = null!;
 	
 	/*----------------------------------------------------------------------------
 		System client services
@@ -64,6 +65,7 @@ public class CInvaderZim
 		TalkingService = new CTalkingService(Client);
 		ActivityService = new CActivityService(Client);
 		ColorRolesService = new CColorRolesService(Client);
+		ModerationLogService = new CModerationLogService(Client);
 		
 		// TODO: Modlog (deleted/edited messages, etc.)
 		

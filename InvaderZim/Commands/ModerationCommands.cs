@@ -46,6 +46,20 @@ public class CModerationCommands : BaseCommandModule
 			Color = YellowGreen
 		};
 		await Context.RespondAsync(Embed);
+		
+		DiscordEmbedBuilder ModLogEmbed = new DiscordEmbedBuilder()
+		{
+			Title = $"{Member.DisplayName} was muted for {Time} {CEmoji.GirBlep}",
+			Description = 
+				$"\n\n ID: {Member.Id}" +
+				$"\nReason: {Reason}",
+			Color = YellowGreen
+		};
+		ModLogEmbed.WithThumbnail(Member.AvatarUrl);
+		ModLogEmbed.WithFooter($"Moderator: {Context.Member.DisplayName}", Context.Member.AvatarUrl);
+		ModLogEmbed.WithTimestamp(DateTime.UtcNow);
+
+		await SendToModLog(Context, ModLogEmbed);
 	}
 	
 	[Command("unmute")]
@@ -77,10 +91,26 @@ public class CModerationCommands : BaseCommandModule
 			Color = YellowGreen
 		};
 		await Context.RespondAsync(Embed);
+		
+		DiscordEmbedBuilder ModLogEmbed = new DiscordEmbedBuilder()
+		{
+			Title = $"{Member.DisplayName} was unmuted {CEmoji.GirBlep}",
+			Description = 
+				$"\n\n ID: {Member.Id}",
+			Color = YellowGreen
+		};
+		ModLogEmbed.WithThumbnail(Member.AvatarUrl);
+		ModLogEmbed.WithFooter($"Moderator: {Context.Member.DisplayName}", Context.Member.AvatarUrl);
+		ModLogEmbed.WithTimestamp(DateTime.UtcNow);
+
+		await SendToModLog(Context, ModLogEmbed);
 	}
+	
+	// TODO: review Administrator permission for Purge and Prune commands
 
 	[Command("purge")]
 	[Description("Purges specified messages count in a channel")]
+	[RequirePermissions(Permissions.Administrator)]
 	public async Task Purge(CommandContext Context,
 		[Description("Count of the messages (up to 99) to purge")] Int32 MessageCount,
 		[Description("The channel to purge messages in")] DiscordChannel? Channel = null)
@@ -136,6 +166,7 @@ public class CModerationCommands : BaseCommandModule
 
 	[Command("prune")]
 	[Description("Prunes messages up to a specific age in a channel (max 100 per request)")]
+	[RequirePermissions(Permissions.Administrator)]
 	public async Task Prune(CommandContext Context,
 		[Description("Age of messages (up to 14 days) to purge (e.g., 1h30m, 10m5s)")] string Time,
 		[Description("The channel to prune messages in")] DiscordChannel? Channel = null)
@@ -227,13 +258,13 @@ public class CModerationCommands : BaseCommandModule
 
 		string PunishmentSummary = WarnsCount switch
 		{
-			1 => "was warned first time",
-			_ => "was warned second time"
+			1 => "was grim-reaped first time",
+			_ => "was grim-reaped second time"
 		};
 
+		Debug.Assert(Context.Member != null);
 		if (WarnsCount != 3) // Response is handled in Ban() method
 		{
-			Debug.Assert(Context.Member != null);
 			DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
 			{
 				Title = $"{RandomString(CQuote.Ban)} {CEmoji.GirBlep}",
@@ -243,6 +274,20 @@ public class CModerationCommands : BaseCommandModule
 				Color = YellowGreen
 			};
 			await Context.RespondAsync(Embed);
+			
+			DiscordEmbedBuilder ModLogEmbed = new DiscordEmbedBuilder()
+			{
+				Title = $"{Member.DisplayName} {PunishmentSummary} {CEmoji.GirBlep}",
+				Description =
+					$"\n\nID: {Member.Id}" +
+					$"\nReason: {Reason}",
+				Color = YellowGreen
+			};
+			ModLogEmbed.WithThumbnail(Member.AvatarUrl);
+			ModLogEmbed.WithFooter($"Moderator: {Context.Member.DisplayName}", Context.Member.AvatarUrl);
+			ModLogEmbed.WithTimestamp(DateTime.UtcNow);
+
+			await SendToModLog(Context, ModLogEmbed);
 		}
 	}
 
@@ -283,10 +328,23 @@ public class CModerationCommands : BaseCommandModule
 		{
 			Title = $"{RandomString(CQuote.Ban)} {CEmoji.GirBlep}",
 			Description = 
-				$"Member {Member.DisplayName} got unwarned by {Context.Member.DisplayName}",
+				$"Member {Member.DisplayName} was unwarned by {Context.Member.DisplayName}",
 			Color = YellowGreen
 		};
 		await Context.RespondAsync(Embed);
+		
+		DiscordEmbedBuilder ModLogEmbed = new DiscordEmbedBuilder()
+		{
+			Title = $"{Member.DisplayName} was unwarned {CEmoji.GirBlep}",
+			Description =
+				$"\n\nID: {Member.Id}",
+			Color = YellowGreen
+		};
+		ModLogEmbed.WithThumbnail(Member.AvatarUrl);
+		ModLogEmbed.WithFooter($"Moderator: {Context.Member.DisplayName}", Context.Member.AvatarUrl);
+		ModLogEmbed.WithTimestamp(DateTime.UtcNow);
+
+		await SendToModLog(Context, ModLogEmbed);
 	}
 	
 	[Command("kick")]
@@ -315,6 +373,20 @@ public class CModerationCommands : BaseCommandModule
 			Color = YellowGreen
 		};
 		await Context.RespondAsync(Embed);
+		
+		DiscordEmbedBuilder ModLogEmbed = new DiscordEmbedBuilder()
+		{
+			Title = $"{Member.DisplayName} was kicked {CEmoji.GirBlep}",
+			Description =
+				$"\n\nID: {Member.Id}" +
+				$"\nReason: {Reason}",
+			Color = YellowGreen
+		};
+		ModLogEmbed.WithThumbnail(Member.AvatarUrl);
+		ModLogEmbed.WithFooter($"Moderator: {Context.Member.DisplayName}", Context.Member.AvatarUrl);
+		ModLogEmbed.WithTimestamp(DateTime.UtcNow);
+
+		await SendToModLog(Context, ModLogEmbed);
 	}
 	
 	[Command("ban")]
@@ -343,12 +415,26 @@ public class CModerationCommands : BaseCommandModule
 			Color = YellowGreen
 		};
 		await Context.RespondAsync(Embed);
+		
+		DiscordEmbedBuilder ModLogEmbed = new DiscordEmbedBuilder()
+		{
+			Title = $"{Member.DisplayName} was banned {CEmoji.GirBlep}",
+			Description =
+				$"\n\nID: {Member.Id}" +
+				$"\nReason: {Reason}",
+			Color = YellowGreen
+		};
+		ModLogEmbed.WithThumbnail(Member.AvatarUrl);
+		ModLogEmbed.WithFooter($"Moderator: {Context.Member.DisplayName}", Context.Member.AvatarUrl);
+		ModLogEmbed.WithTimestamp(DateTime.UtcNow);
+
+		await SendToModLog(Context, ModLogEmbed);
 	}
 	
 	[Command("unban")]
 	[Description("Removes a ban from specified member")]
 	public async Task UnBan(CommandContext Context, 
-		[Description("The member to unban")] DiscordUser User)
+		[Description("The user to unban")] DiscordUser User)
 	{
 		if (!CanModerate(Context))
 		{
@@ -368,5 +454,26 @@ public class CModerationCommands : BaseCommandModule
 			
 		await Context.Guild.UnbanMemberAsync(User);
 		await Context.RespondAsync($"Successfully unbanned {User.Username}");
+		
+		Debug.Assert(Context.Member != null);
+		DiscordEmbedBuilder ModLogEmbed = new DiscordEmbedBuilder()
+		{
+			Title = $"{User.Username} was unbanned {CEmoji.GirBlep}",
+			Description =
+				$"\n\nID: {User.Id}",
+			Color = YellowGreen
+		};
+		ModLogEmbed.WithThumbnail(User.AvatarUrl);
+		ModLogEmbed.WithFooter($"Moderator: {Context.Member.DisplayName}", Context.Member.AvatarUrl);
+		ModLogEmbed.WithTimestamp(DateTime.UtcNow);
+
+		await SendToModLog(Context, ModLogEmbed);
+	}
+	
+	private async Task SendToModLog(CommandContext Context, DiscordEmbed Embed)
+	{
+		DiscordChannel ModLogChannel = Context.Guild.GetChannel(CChannel.ModLog);
+		
+		await ModLogChannel.SendMessageAsync(Embed);
 	}
 }

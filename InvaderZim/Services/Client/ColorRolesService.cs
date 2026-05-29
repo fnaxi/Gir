@@ -11,10 +11,8 @@ namespace InvaderZim.Services.Client;
 
 public class CColorRolesService
 {
-	private readonly DiscordClient Client;
-	public CColorRolesService(DiscordClient InClient)
+	public CColorRolesService(DiscordClient Client)
 	{
-		Client = InClient;
 		Client.GuildDownloadCompleted += Client_OnGuildDownloadCompleted;
 		Client.MessageReactionAdded += Client_OnMessageReactionAdded;
 		Client.MessageReactionRemoved += Client_OnMessageReactionRemoved;

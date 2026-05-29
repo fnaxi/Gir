@@ -10,10 +10,8 @@ namespace InvaderZim.Services.Client.System;
 
 public class CConnectionStatusService
 {
-	private readonly DiscordClient Client;
-	public CConnectionStatusService(DiscordClient InClient)
+	public CConnectionStatusService(DiscordClient Client)
 	{
-		Client = InClient;
 		Client.Ready += Client_OnReady;
 		Client.GuildDownloadCompleted += Client_OnGuildDownloadCompleted;
 	}

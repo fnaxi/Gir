@@ -10,10 +10,8 @@ namespace InvaderZim.Services.Client;
 
 public class CGreetingService
 {
-	private readonly DiscordClient Client;
-	public CGreetingService(DiscordClient InClient)
+	public CGreetingService(DiscordClient Client)
 	{
-		Client = InClient;
 		Client.GuildMemberAdded += Client_OnGuildMemberAdded;
 		Client.GuildMemberRemoved += Client_OnGuildMemberRemoved;
 	}

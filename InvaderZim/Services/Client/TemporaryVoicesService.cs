@@ -9,10 +9,8 @@ namespace InvaderZim.Services.Client;
 
 public class CTemporaryVoicesService
 {
-	private readonly DiscordClient Client;
-	public CTemporaryVoicesService(DiscordClient InClient)
+	public CTemporaryVoicesService(DiscordClient Client)
 	{
-		Client = InClient;
 		Client.GuildDownloadCompleted += Client_OnGuildDownloadCompleted;
 		Client.VoiceStateUpdated += Client_OnVoiceStateUpdated;
 	}
