@@ -18,7 +18,7 @@ public static class CChannel
 	public const UInt64 GeneralChat = 1507688583765430292;
 	public const UInt64 BotChat = 1507693308011479210;
 	
-	public const UInt64 Ticket = 1507696187417825300;
+	public const UInt64 TicketCreator = 1507696187417825300;
 	public const UInt64 ModLog = 1507696253213868242;
 	
 	/*----------------------------------------------------------------------------

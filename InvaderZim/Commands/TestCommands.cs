@@ -10,7 +10,8 @@ namespace InvaderZim.Commands;
 
 public class CTestCommands : BaseCommandModule
 {
-	[Command("emojis")] [RequireUserPermissions(Permissions.Administrator)]
+	[Command("emojis")]
+	[RequireUserPermissions(Permissions.Administrator)]
 	public async Task Emojis(CommandContext Context)
 	{
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()

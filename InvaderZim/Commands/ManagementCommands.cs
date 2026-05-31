@@ -32,7 +32,7 @@ public class CManagementCommands : BaseCommandModule
 		[RequirePermissions(Permissions.Administrator)]
 		public async Task SendRules(CommandContext Context)
 		{
-			DiscordChannel TicketChannel = Context.Guild.GetChannel(CChannel.Ticket);
+			DiscordChannel TicketChannel = Context.Guild.GetChannel(CChannel.TicketCreator);
 			
 			DiscordRole AdminRole = Context.Guild.GetRole(CRole.Admin);
 			DiscordRole ModeratorRole = Context.Guild.GetRole(CRole.Moderator);
@@ -41,7 +41,7 @@ public class CManagementCommands : BaseCommandModule
 			{
 				Title = ":books: SERVER RULES :books:",
 				Description = 
-					$"Joining the server implies your agreement to the rules and that you are older than 16 years old (according to the PEGI rating in the [Steam](https://store.steampowered.com)" +
+					$"Joining the server implies your agreement to the rules and that you are older than 16 years old (according to the PEGI rating in the [Steam](https://store.steampowered.com))" +
 					$" {CEmoji.Alien}" +
 					$"\n### 1. TALKING STUFF {CEmoji.GirDress}" +
 					$"\n1.1. No mean stuff. Don’t be mean or bully people / bots." +
@@ -75,11 +75,50 @@ public class CManagementCommands : BaseCommandModule
 		public async Task SendColorRoles(CommandContext Context)
 		{
 			const string Text =
-				"Choose your **Robe** below to declare your alignment and claim your place in the Mid-Atlantic Conclave!" +
+				"Choose your **Robe** below to claim your place in the Mid-Atlantic Conclave!" +
 				"\n" +
 				"\n*Remember, Commandments dictate: Thou shalt choose your hue with pride. (And no, black is not an option)*";
 			
 			await Context.Channel.SendMessageAsync(Text);
+			await Context.Message.DeleteAsync();
+		}
+		
+		[Command("ticket_form")]
+		[Description("Sends ticket message")]
+		[RequirePermissions(Permissions.Administrator)]
+		public async Task SendTicketForm(CommandContext Context)
+		{
+			DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
+			{
+				Title = $":blue_book: Support Tickets {CEmoji.BmoDance}",
+				Description = 
+					$"Click the button below to open a ticket and contact our support team.",
+				Color = YellowGreen
+			};
+			Embed.AddField("What we can help with?", 
+				"• Member reporting\n" +
+				"• Server appeals\n" +
+				"• General questions & feedback");
+
+			DiscordComponentEmoji Emoji = new DiscordComponentEmoji( DiscordEmoji.FromName(Context.Client, ":envelope_with_arrow:") );
+			DiscordButtonComponent Button = new DiscordButtonComponent(ButtonStyle.Primary, "SID_CreateTicket", "Create a Ticket", false, Emoji);
+			
+			DiscordMessageBuilder Message = new DiscordMessageBuilder();
+			Message.WithEmbed(Embed);
+			Message.AddComponents(Button);
+			
+			await Context.Channel.SendMessageAsync(Message);
+			
+			await Context.Message.DeleteAsync();
+		}
+		
+		// TODO: revisit this
+		[Command("support")]
+		[RequirePermissions(Permissions.Administrator)]
+		public async Task CallSupport(CommandContext Context)
+		{
+			DiscordRole ModeratorRole = Context.Guild.GetRole(CRole.Moderator);
+			await Context.Channel.SendMessageAsync($"{ModeratorRole.Mention}");
 			await Context.Message.DeleteAsync();
 		}
 	}

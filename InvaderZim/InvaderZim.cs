@@ -8,6 +8,7 @@ using InvaderZim.Misc;
 using InvaderZim.Services.Client;
 using InvaderZim.Services.Client.System;
 using InvaderZim.Services.Commands;
+using Microsoft.Extensions.Logging;
 
 namespace InvaderZim;
 
@@ -25,6 +26,7 @@ public class CInvaderZim
 	private CActivityService ActivityService = null!;
 	private CColorRolesService ColorRolesService = null!;
 	private CModerationLogService ModerationLogService = null!;
+	private CTicketsService TicketsService = null!;
 	
 	/*----------------------------------------------------------------------------
 		System client services
@@ -36,20 +38,26 @@ public class CInvaderZim
 	----------------------------------------------------------------------------*/
 	private CCommandErrorsService CommandErrorsService = null!;
 	
+	public const LogLevel MinimumLogLevel = LogLevel.Information;
+	
 	public async Task Start()
 	{
 		CConfig Config = CConfigParser.Parse();
 		DiscordConfiguration DisConfig = new DiscordConfiguration
 		{
 			Intents = DiscordIntents.All,
+			
 			Token = Config.Token,
 			TokenType = TokenType.Bot,
 			AutoReconnect = true,
-			LogUnknownEvents = false // TODO: Replace with true later
+			
+			LogUnknownEvents = false, // TODO: Replace with true later
+			MinimumLogLevel = MinimumLogLevel,
+			LogTimestampFormat = "MMM dd yyyy - hh:mm:ss tt"
 		};
 
 		Client = new DiscordClient(DisConfig);
-
+		
 		SetupCommands(Config.Prefix);
 		SetupServices();
 
@@ -66,8 +74,7 @@ public class CInvaderZim
 		ActivityService = new CActivityService(Client);
 		ColorRolesService = new CColorRolesService(Client);
 		ModerationLogService = new CModerationLogService(Client);
-		
-		// TODO: Modlog (deleted/edited messages, etc.)
+		TicketsService = new CTicketsService(Client);
 		
 		// Client.System
 		ConnectionStatusService = new CConnectionStatusService(Client);
@@ -100,7 +107,7 @@ public class CInvaderZim
 	private void RegisterCommandModule<T>() where T : BaseCommandModule
 	{
 		Commands.RegisterCommands<T>();
-		CLog.Info($"Registered {typeof(T).Name}");
+		LogInfo($"Registered {typeof(T).Name}");
 	}
 }
 

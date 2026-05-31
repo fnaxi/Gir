@@ -30,20 +30,12 @@ public class CActivityService
 			$"{ConquestEmoji} Conquering the world!"
 		];
 
-		CLog.Info($"Status rotation loop started (updating every {UpdateTime} seconds)");
+		LogInfo($"Status rotation loop started (updating every {UpdateTime} seconds)");
 		while ( !(Sender.Ping > 3000) ) // TODO: Ambitious
 		{
-			try
-			{
-				string Status = RandomString(Statuses);
+			string Status = RandomString(Statuses);
 
-				await UpdateActivity(new DiscordActivity(Status, ActivityType.Playing), UserStatus.Online);
-			}
-			catch (Exception Ex)
-			{
-				CLog.Error($"Failed to update status: {Ex.Message}");
-			}
-			
+			await UpdateActivity(new DiscordActivity(Status, ActivityType.Playing), UserStatus.Online);
 			await Task.Delay(TimeSpan.FromSeconds(UpdateTime)); 
 		}
 	}
@@ -51,6 +43,6 @@ public class CActivityService
 	private async Task UpdateActivity(DiscordActivity Activity, UserStatus Status)
 	{
 		await Client.UpdateStatusAsync(Activity, Status);
-		CLog.Info($"Bot activity updated: {Activity.ActivityType} / {Activity.Name}");
+		LogInfo($"Bot activity updated: {Activity.ActivityType} / {Activity.Name}");
 	}
 }

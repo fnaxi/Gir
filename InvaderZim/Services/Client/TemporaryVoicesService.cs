@@ -29,8 +29,8 @@ public class CTemporaryVoicesService
 			}
 		}
 	}
-	
-	private const string TempVoiceEmoji = "🜋";
+
+	private const string TempVoiceName = "Room";
 	private async Task Client_OnVoiceStateUpdated(DiscordClient Sender, VoiceStateUpdateEventArgs Args)
 	{
 		DiscordGuild Guild = Args.Guild;
@@ -40,7 +40,7 @@ public class CTemporaryVoicesService
 		{
 			DiscordMember Member = await Guild.GetMemberAsync(Args.User.Id);
 
-			string Name = $"{TempVoiceEmoji} {Member.DisplayName}";
+			string Name = $"🜋 {Member.DisplayName}'s {TempVoiceName}";
 			DiscordChannel NewChannel = await Guild.CreateVoiceChannelAsync(Name, Guild.GetChannel(CCategory.VoiceChannels), null, CreateVoiceChannel.UserLimit);
 
 			await Member.ModifyAsync(x => x.VoiceChannel = NewChannel);
@@ -51,8 +51,8 @@ public class CTemporaryVoicesService
 		}
 	}
 	
-	private bool IsTempVoice(DiscordChannel Channel)
+	private static bool IsTempVoice(DiscordChannel Channel)
 	{
-		return Channel.Id is not (CChannel.CreateVoice or CChannel.AFK);
+		return Channel.Id is not (CChannel.CreateVoice or CChannel.AFK) && Channel.Name.Contains(TempVoiceName);
 	}
 }

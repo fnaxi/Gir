@@ -18,7 +18,7 @@ public class CColorRolesService
 		Client.MessageReactionRemoved += Client_OnMessageReactionRemoved;
 	}
 
-	private const UInt64 MessageId = 1509866013577969684;
+	private UInt64 MessageId = 1510595309506396181;
 
 	private Dictionary<DiscordEmoji, UInt64> ColorRolesMap = null!;
 	
@@ -38,7 +38,13 @@ public class CColorRolesService
 		{ 
 			DiscordChannel Channel = Guild.GetChannel(CChannel.Info);
 			if (Channel == null) return;
-			
+
+			// TODO: message ID change iteration is slow
+			if (MessageId == 0)
+			{
+				LogWarning("MessageId hasn't been set! Color roles service will not work");
+				return;
+			}
 			DiscordMessage Message = await Channel.GetMessageAsync(MessageId);
 			
 			await CreateReactions(Message);
@@ -55,12 +61,12 @@ public class CColorRolesService
 			DiscordEmoji Emoji = ColorRole.Key;
 			UInt64 RoleId = ColorRole.Value;
 			
-			CLog.Info($"Checking offline reactions for {Emoji.GetDiscordName()} / {RoleId}");
+			LogInfo($"Checking offline reactions for {Emoji.GetDiscordName()} / {RoleId}");
 			
 			DiscordRole? Role = Guild.GetRole(RoleId);
 			if (Role == null)
 			{
-				CLog.Error($"Cannot find role with Id {RoleId}!");
+				LogError($"Cannot find role with Id {RoleId}!");
 				continue;
 			}
 
@@ -76,13 +82,13 @@ public class CColorRolesService
 				{
 					case true when !bHasRole:
 						await Member.GrantRoleAsync(Role);
-						CLog.Info($"Granted {Role.Name} / {Role.Id} to {Member.Username} (offline reaction)");
+						LogInfo($"Granted {Role.Name} / {Role.Id} to {Member.Username} (offline reaction)");
 						await Task.Delay(TimeSpan.FromSeconds(2));
 						break;
 						
 					case false when bHasRole:
 						await Member.RevokeRoleAsync(Role);
-						CLog.Info($"Revoked {Role.Name} / {Role.Id} from {Member.Username} (offline reaction)");
+						LogInfo($"Revoked {Role.Name} / {Role.Id} from {Member.Username} (offline reaction)");
 						await Task.Delay(TimeSpan.FromSeconds(2));
 						break;
 				}
@@ -96,7 +102,7 @@ public class CColorRolesService
 	{
 		foreach (DiscordEmoji Emoji in ColorRolesMap.Keys)
 		{
-			DiscordReaction? Reaction = Message.Reactions.First(r => r.Emoji == Emoji);
+			DiscordReaction? Reaction = Message.Reactions.FirstOrDefault(r => r.Emoji == Emoji);
 			if (Reaction != null && Reaction.IsMe) continue;
 
 			await Message.CreateReactionAsync(Emoji);

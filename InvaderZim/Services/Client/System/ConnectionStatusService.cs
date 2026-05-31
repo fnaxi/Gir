@@ -18,7 +18,7 @@ public class CConnectionStatusService
 
 	private Task Client_OnReady(DiscordClient Sender, ReadyEventArgs Args)
 	{
-		CLog.Info("Zim is ready!");
+		LogInfo("Gir is ready!");
 		
 		#if TODO
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
@@ -37,7 +37,7 @@ public class CConnectionStatusService
 	
 	private Task Client_OnGuildDownloadCompleted(DiscordClient Sender, GuildDownloadCompletedEventArgs Args)
 	{
-		CLog.Info("Guild download completed");
+		LogInfo("Guild download completed");
 		
 		return Task.CompletedTask;
 	}

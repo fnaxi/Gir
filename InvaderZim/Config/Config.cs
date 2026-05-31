@@ -26,9 +26,9 @@ public abstract class CConfigParser
 		Debug.Assert(Config != null, nameof(Config) + " != null");
 		Debug.Assert(IsTextValid(Config.Token) && IsTextValid(Config.Prefix), "Config was not parsed properly or it didn't set required fields!");
 		
-		CLog.Info("Parsed config");
-		CLog.Info($"Token: {Config.Token}");
-		CLog.Info($"Prefix: {Config.Prefix}");
+		LogInfo("Parsed config");
+		LogDebug($"Token: {Config.Token}");
+		LogDebug($"Prefix: {Config.Prefix}");
 		
 		return Config;
 	}

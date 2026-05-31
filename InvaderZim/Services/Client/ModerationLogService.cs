@@ -17,7 +17,7 @@ public class CModerationLogService
 	
 	private async Task Client_OnMessageUpdated(DiscordClient Sender, MessageUpdateEventArgs Args)
 	{
-		if (Args.Message.Author.IsBot) return;
+		if (Args.Message.Author.IsBot || Args.Message.Content == Args.MessageBefore.Content) return;
 		
 		DiscordChannel ModLogChannel = Args.Guild.GetChannel(CChannel.ModLog);
 		

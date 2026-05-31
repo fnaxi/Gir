@@ -56,7 +56,7 @@ public class CMiscCommands : BaseCommandModule
 		Embed.AddField(":date: Account Created", $"{Member.CreationTimestamp:D}", true);
 		Embed.AddField(":inbox_tray: Joined Server", $"{Member.JoinedAt:D}", true);
 		Embed.AddField($":label: Roles [{Roles.Count}]", RolesText, true);
-		Embed.AddField("Is muted?", Member.IsMuted.ToString(), true);
+		Embed.AddField(":mute: Is muted?", Member.IsMuted.ToString(), true);
 		
 		Debug.Assert(Context.Member != null);
 		Embed.WithFooter($"Requested by {Context.Member.DisplayName}", Context.Member.AvatarUrl);
