@@ -28,7 +28,7 @@ public abstract class CConfigParser
 		
 		LogInfo("Parsed config");
 		LogDebug($"Token: {Config.Token}");
-		LogDebug($"Prefix: {Config.Prefix}");
+		LogInfo($"Prefix: {Config.Prefix}");
 		
 		return Config;
 	}

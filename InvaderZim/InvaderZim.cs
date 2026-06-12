@@ -4,7 +4,6 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using InvaderZim.Commands;
 using InvaderZim.Config;
-using InvaderZim.Misc;
 using InvaderZim.Services.Client;
 using InvaderZim.Services.Client.System;
 using InvaderZim.Services.Commands;
@@ -14,33 +13,33 @@ namespace InvaderZim;
 
 public class CInvaderZim
 {
-	private DiscordClient Client = null!;
-	private CommandsNextExtension Commands { get; set; } = null!;
+	private static DiscordClient Client = null!;
+	private static CommandsNextExtension Commands { get; set; } = null!;
 	
 	/*----------------------------------------------------------------------------
 		Client services
 	----------------------------------------------------------------------------*/
-	private CTemporaryVoicesService TempVoicesService = null!;
-	private CGreetingService GreetingService = null!;
-	private CTalkingService TalkingService = null!;
-	private CActivityService ActivityService = null!;
-	private CColorRolesService ColorRolesService = null!;
-	private CModerationLogService ModerationLogService = null!;
-	private CTicketsService TicketsService = null!;
+	private static CTemporaryVoicesService TempVoicesService = null!;
+	private static CGreetingService GreetingService = null!;
+	private static CTalkingService TalkingService = null!;
+	private static CActivityService ActivityService = null!;
+	private static CColorRolesService ColorRolesService = null!;
+	private static CModerationLogService ModerationLogService = null!;
+	public  static CTicketsService TicketsService = null!;
 	
 	/*----------------------------------------------------------------------------
 		System client services
 	----------------------------------------------------------------------------*/
-	private CConnectionStatusService ConnectionStatusService = null!;
+	private static CConnectionStatusService ConnectionStatusService = null!;
 	
 	/*----------------------------------------------------------------------------
 		Commands Services
 	----------------------------------------------------------------------------*/
-	private CCommandErrorsService CommandErrorsService = null!;
+	private static CCommandErrorsService CommandErrorsService = null!;
 	
 	public const LogLevel MinimumLogLevel = LogLevel.Information;
 	
-	public async Task Start()
+	public static async Task Main()
 	{
 		CConfig Config = CConfigParser.Parse();
 		DiscordConfiguration DisConfig = new DiscordConfiguration
@@ -65,7 +64,7 @@ public class CInvaderZim
 		await Task.Delay(-1);
 	}
 	
-	private void SetupServices()
+	private static void SetupServices()
 	{
 		// Client
 		TempVoicesService = new CTemporaryVoicesService(Client);
@@ -83,7 +82,7 @@ public class CInvaderZim
 		CommandErrorsService = new CCommandErrorsService(Commands);
 	}
 	
-	private void SetupCommands(string Prefix)
+	private static void SetupCommands(string Prefix)
 	{
 		CommandsNextConfiguration CommandsConfig = new CommandsNextConfiguration()
 		{
@@ -101,21 +100,13 @@ public class CInvaderZim
 		RegisterCommandModule<CModerationCommands>();
 		RegisterCommandModule<CEntertainCommands>();
 		RegisterCommandModule<CManagementCommands>();
+		RegisterCommandModule<CTicketCommands>();
 		RegisterCommandModule<CTestCommands>();
 	}
 	
-	private void RegisterCommandModule<T>() where T : BaseCommandModule
+	private static void RegisterCommandModule<T>() where T : BaseCommandModule
 	{
 		Commands.RegisterCommands<T>();
 		LogInfo($"Registered {typeof(T).Name}");
-	}
-}
-
-public abstract class CEntryPoint
-{
-	public static async Task Main()
-	{
-		CInvaderZim Bot = new CInvaderZim();
-		await Bot.Start();
 	}
 }

@@ -19,8 +19,8 @@ public class CActivityService
 	private async Task Client_OnReady(DiscordClient Sender, ReadyEventArgs Args)
 	{
 		DiscordEmoji WaffleEmoji = DiscordEmoji.FromName(Sender, ":waffle:");
-		DiscordEmoji MonsterEmoji = DiscordEmoji.FromName(Sender, ":cocktail:");
-		DiscordEmoji ConquestEmoji = DiscordEmoji.FromName(Sender, ":earth_americas:");
+		DiscordEmoji MonsterEmoji = DiscordEmoji.FromName(Sender, ":coffee:");
+		DiscordEmoji ConquestEmoji = DiscordEmoji.FromName(Sender, ":map:");
 
 		const UInt16 UpdateTime = 30;
 		List<string> Statuses =
