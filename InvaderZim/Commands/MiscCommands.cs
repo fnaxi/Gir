@@ -19,17 +19,38 @@ public class CMiscCommands : BaseCommandModule
 	{
 		Debug.Assert(Context.Member != null);
 		
-		// TODO: Help command
-
 		DiscordEmbedBuilder Embed = CHelpMenuService.GetMainMenuEmbed(Context.Member);
 		List<DiscordSelectComponentOption> Options = new List<DiscordSelectComponentOption>
 		{
-			new("Choose a Category...", "choose", "", true, emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":pushpin:"))),
+			new("Choose a Category...", "SID_Choose", 
+				"", true, 
+				emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":pushpin:"))),
 			
-			new("Main Menu", "main", "Go back to the main menu.", emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":house:"))),
-			new("Moderation", "mod", "Ban, kick, mute and purge/prune commands.", emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":shield:"))),
-			new("Misc & Utilities", "misc", "Misc commands and utilities.", emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":gear:"))),
-			new("Entertain", "entertain", "Entertain commands.", emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":tada:")))
+			// TODO: new("Main Menu", "main", "Go back to the main menu.", emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":house:"))),
+			
+			new("Moderation", "SID_Mod", 
+				"Tools to enforce server rules and keep the community peaceful.", 
+				emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":shield:"))),
+			
+			new("Misc & Utilities", "SID_Misc", 
+				"Misc commands and utilities.", 
+				emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":gear:"))),
+			
+			new("Entertain", "SID_Entertain", 
+				"Entertain commands.", 
+				emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":tada:"))),
+			
+			new("Tickets", "SID_Ticket", 
+				"Commands for managing, opening, and closing support tickets.", 
+				emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":ticket:"))),
+			
+			new("Management", "SID_Manage", 
+				"Administrator-only management commands.",
+				emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":tools:"))),
+			
+			new("Test", "SID_Test", 
+				"Administrator-only commands that are helpful for testing the bot.", 
+				emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(Context.Client, ":warning:")))
 		};
 		DiscordSelectComponent Dropdown = new DiscordSelectComponent($"SID_HelpMenu_{Context.Member.Id}", "Select a category...", Options);
 

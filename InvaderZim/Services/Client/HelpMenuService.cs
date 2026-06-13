@@ -57,36 +57,64 @@ public class CHelpMenuService
 		string SelectedOption = Args.Values[0];
 		DiscordEmbedBuilder UpdatedEmbed = SelectedOption switch
 		{
-			"choose" => new DiscordEmbedBuilder(Embed),
-			"main" => GetMainMenuEmbed(Owner),
+			"SID_Choose" => new DiscordEmbedBuilder(Embed),
+			// TODO: "main" => GetMainMenuEmbed(Owner),
 			
-			"mod" => new DiscordEmbedBuilder(Embed)
+			"SID_Mod" => new DiscordEmbedBuilder(Embed)
 				.WithTitle($"{HelpTitlePrefix} Moderation Commands :shield:")
 				.WithDescription(
 					"• `mute <user> ?<reason>` - Mutes (timeouts) a member.\n" +
-					"• `unmute <user>` - Removes a timeout from a member (can only be used by administrators).\n" +
+					"• `unmute <user>` - Removes a timeout from a member.\n" +
+					"• `reap <user> ?<reason>` - Grim-reaps (warns) the specified member. Automatically issues a ban after reaching 3 warnings.\n" +
+					"• `unwarn <user>` - Removes a warning from a member (can only be used by administrators).\n" +
 					"• `kick <user> ?<reason>` - Kicks a member.\n" +
-					"• `ban <user> ?<reason>` - Bans a member.\n" +
+					"• `ban <user> ?<reason>` - Permanently bans the specified member.\n" +
+					"• `unban <user> ?<reason>` - Removes a ban from specified member.\n" +
 					"• `purge <amount>` - Deletes specific amount of messages (up to 99).\n" +
 					"• `prune <time>` - Deletes messages older than a specified time (up to 14 days due to Discord restrictions) (in format 2h15m, 1d6h, etc).")
 				.WithColor(DiscordColor.Azure),
 
-			"misc" => new DiscordEmbedBuilder(Embed)
+			"SID_Misc" => new DiscordEmbedBuilder(Embed)
 				.WithTitle($"{HelpTitlePrefix} Misc & Utilities :gear:")
 				.WithDescription(
+					$"• `help` - Shows help menu (like this one haha {CEmoji.GirDance}).\n" +
 					"• `info` - Shows information about a member.\n" +
 					"• `ping` - Checks bot latency.\n" +
 					"• `shutdown` - Shutdowns the bot.")
 				.WithColor(DiscordColor.Gray),
 
-			"entertain" => new DiscordEmbedBuilder(Embed)
+			"SID_Entertain" => new DiscordEmbedBuilder(Embed)
 				.WithTitle($"{HelpTitlePrefix} Entertainment Commands :tada:")
 				.WithDescription(
 					"• `waffles` - Gives gir some tasty waffles to eat.\n"+ 
 				    "• `tacos` - Gives gir some tacos to eat.")
-				.WithColor(DiscordColor.Gold),
+				.WithColor(DiscordColor.Yellow),
 			
-			// TODO: Management commands
+			"SID_Ticket" => new DiscordEmbedBuilder(Embed)
+				.WithTitle($"{HelpTitlePrefix} Ticket Commands :ticket:")
+				.WithDescription(
+					"**NOTE:** These commands should be executed in the ticket channel.\n\n" +
+					"• `ticket close` - Closes this ticket.\n" +
+					"• `ticket open` - Re-opens this ticket (can only be used by moderators).\n" +
+					"• `ticket delete` - Deletes this ticket (can only be used by administrators).")
+				.WithColor(DiscordColor.Teal),
+			
+			"SID_Manage" => new DiscordEmbedBuilder(Embed)
+				.WithTitle($"{HelpTitlePrefix} Management Commands :tools:")
+				.WithDescription(
+					$"**NOTE:** These commands can only be executed by administrators {CEmoji.BmoDance}\n\n" +
+					$"• `news` - Reposts a message user replied to in the {Args.Guild.GetChannel(CChannel.News).Mention} channel.\n" +
+					"• `send rules` - Sends rules message.\n" +
+					"• `send color_roles` - Sends color roles message.\n" +
+					"• `send ticket_form` - Sends ticket form message.")
+				.WithColor(DiscordColor.Brown),
+			
+			"SID_Test" => new DiscordEmbedBuilder(Embed)
+				.WithTitle($"{HelpTitlePrefix} Test Commands :warning:")
+				.WithDescription(
+					$"**NOTE:** These commands can only be executed by administrators {CEmoji.BmoDance}\n\n" +
+					"• `emojis` - Sends an embed with some custom animated emojis.")
+				.WithColor(DiscordColor.Orange),
 
 			_ => new DiscordEmbedBuilder(Embed).WithDescription("Unknown category.")
 		};

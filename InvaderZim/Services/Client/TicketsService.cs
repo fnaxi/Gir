@@ -31,25 +31,23 @@ public class CTicket
 	public async Task Open(DiscordGuild Guild, DiscordUser OpenedByUser)
 	{
 		if (!bClosed) return;
-
+		bClosed = false;
+		
 		DiscordChannel Channel = Guild.GetChannel(ChannelId);
 		
-		await Channel.ModifyAsync(a => a.Name = Name[..^ClosedSuffix.Length]);
+		await Channel.ModifyAsync(a => a.Name = Channel.Name.Substring(0, Channel.Name.Length - ClosedSuffix.Length));
 		await Channel.SendMessageAsync($"The ticket was re-opened by {OpenedByUser.Mention} ({OpenedByUser.Id})");
-		
-		bClosed = false;
 	}
 	
 	public async Task Close(DiscordGuild Guild, DiscordUser ClosedByUser, string Reason = "No reason provided")
 	{
 		if (bClosed) return;
-
+		bClosed = true;
+		
 		DiscordChannel Channel = Guild.GetChannel(ChannelId);
 		
 		await Channel.ModifyAsync(a => a.Name = $"{Name}{ClosedSuffix}");
 		await Channel.SendMessageAsync($"The ticket was closed by {ClosedByUser.Mention} ({ClosedByUser.Id})\n\nReason: {Reason}");
-		
-		bClosed = true;
 	}
 }
 
@@ -67,16 +65,29 @@ public class CTicketsService
 	{
 		foreach (DiscordGuild Guild in Args.Guilds.Values)
 		{
-			LogDebug($"Guild {Guild.Name} ({Guild.Id})");
+			LogInfo($"Collecting tickets for {Guild.Name} ({Guild.Id}) guild");
 			IReadOnlyList<DiscordChannel> Channels = await Guild.GetChannelsAsync();
 			foreach (DiscordChannel Channel in Channels)
 			{
-				if (!IsTicketChannel(Channel) || Channel.Name.EndsWith(CTicket.Prefix)) continue;
+				if (!IsTicketChannel(Channel)) continue;
 
+				Int32 ID = Int32.Parse(Channel.Name.Split('-')[1]);
+				if (Tickets.Any(t => t.Id == ID))
+				{
+					CTicket? OriginalTicket = Tickets.Find(t => t.Id == ID);
+					
+					LogError($"Found two tickets with the same ID: {OriginalTicket.Name} / {Channel.Name}");
+					continue;
+				}
+				
 				// TODO: check there are no tickets with same ID
 				
 				bool bClosed = Channel.Name.Contains(CTicket.ClosedSuffix);
-				Tickets.Add(new CTicket(Channel.Name, Int32.Parse(Channel.Name.Split('-')[1]), Channel.Id, Guild.Id, bClosed));
+				Tickets.Add(new CTicket(Channel.Name, ID, Channel.Id, Guild.Id, bClosed));
+			}
+			foreach (CTicket Ticket in Tickets)
+			{
+				LogInfo($"{Guild.Name} ({Guild.Id}): Found ticket {Ticket.Name} (ID/{Ticket.Id}, Channel/{Ticket.ChannelId}, Closed?/{Ticket.bClosed})");
 			}
 		}
 	}

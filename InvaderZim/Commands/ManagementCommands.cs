@@ -45,7 +45,7 @@ public class CManagementCommands : BaseCommandModule
 					$" {CEmoji.Alien}" +
 					$"\n### 1. TALKING STUFF {CEmoji.GirDress}" +
 					$"\n1.1. No mean stuff. Don’t be mean or bully people / bots." +
-					$"\n\n1.2. No hate speech, racism, or yucky discrimination. Zim likes everyone! Even the Earth pigs in some way." +
+					$"\n\n1.2. No hate speech, racism, or yucky discrimination. Gir likes everyone! Even the Earth pigs in some way." +
 					$"\n\n1.3. Do not send repeated messages, images, or @mentions. This includes excessive use of CAPS LOCK, emojis, or text walls that disrupt conversation." +
 					$"\n\n1.4. Post content in the correct channels. Read the channel descriptions to understand their purpose." +
 					$"\n\n1.5. NFSW content is forbidden." +
@@ -60,7 +60,7 @@ public class CManagementCommands : BaseCommandModule
 					$"\n~ Violations of the rules may result in warnings, temporary mutes, or permanent bans depending on severity and frequency of the offense." +
 					$"\n\n~ Any attempt to circumvent the rules will result in a ban." +
 					$"\n\n~ Moderators may issue penalties outside the rules if it helps maintain the order on the server." +
-					$"\n\n~ If you witness a rule being broken, please report it using a {TicketChannel.Mention}" +
+					$"\n\n~ If you witness a rule being broken, please report it using {TicketChannel.Mention}" +
 					$"\n\nNow go eat some waffles! 🧇 You've made it this far xD",
 				Color = YellowGreen
 			};
@@ -109,16 +109,6 @@ public class CManagementCommands : BaseCommandModule
 			
 			await Context.Channel.SendMessageAsync(Message);
 			
-			await Context.Message.DeleteAsync();
-		}
-		
-		// TODO: revisit this
-		[Command("support")]
-		[RequirePermissions(Permissions.Administrator)]
-		public async Task CallSupport(CommandContext Context)
-		{
-			DiscordRole ModeratorRole = Context.Guild.GetRole(CRole.Moderator);
-			await Context.Channel.SendMessageAsync($"{ModeratorRole.Mention}");
 			await Context.Message.DeleteAsync();
 		}
 	}

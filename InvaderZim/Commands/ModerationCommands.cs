@@ -392,7 +392,7 @@ public class CModerationCommands : BaseCommandModule
 	}
 	
 	[Command("ban")]
-	[Description("Bans the specified member")]
+	[Description("Permanently bans the specified member")]
 	public async Task Ban(CommandContext Context, 
 		[Description("The member to ban")] DiscordMember Member,
 		[Description("The reason of the ban")] string Reason = "No reason provided")

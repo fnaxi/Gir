@@ -22,7 +22,7 @@ public class CActivityService
 		DiscordEmoji MonsterEmoji = DiscordEmoji.FromName(Sender, ":coffee:");
 		DiscordEmoji ConquestEmoji = DiscordEmoji.FromName(Sender, ":crossed_swords:");
 
-		const UInt16 UpdateTime = 30;
+		const UInt16 UpdateTime = 240;
 		List<string> Statuses =
 		[
 			$"{WaffleEmoji} Eating tasty waffles",

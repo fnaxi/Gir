@@ -48,7 +48,7 @@ public class CColorRolesService
 			DiscordMessage Message = await Channel.GetMessageAsync(MessageId);
 			
 			await CreateReactions(Message);
-			await HandleOfflineReactions(Guild, Message);
+			// TODO: await HandleOfflineReactions(Guild, Message);
 		}
 	}
 

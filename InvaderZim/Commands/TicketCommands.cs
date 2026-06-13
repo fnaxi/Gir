@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using InvaderZim.ID;
 using InvaderZim.Services.Client;
 
 namespace InvaderZim.Commands;
@@ -21,7 +22,7 @@ public class CTicketCommands : BaseCommandModule
 		}
 		if (!CTicketsService.IsTicketChannel(Context.Channel))
 		{
-			await Context.RespondAsync("This command can only be invoked in a ticket channel!");
+			await Context.RespondAsync($"This command can only be invoked in a ticket channel! {CEmoji.GirBlep}");
 			return;
 		}
 
@@ -44,7 +45,7 @@ public class CTicketCommands : BaseCommandModule
 		}*/
 		if (!CTicketsService.IsTicketChannel(Context.Channel))
 		{
-			await Context.RespondAsync("This command can only be invoked in a ticket channel!");
+			await Context.RespondAsync($"This command can only be invoked in a ticket channel! {CEmoji.GirBlep}");
 			return;
 		}
 
@@ -66,7 +67,7 @@ public class CTicketCommands : BaseCommandModule
 		}
 		if (!CTicketsService.IsTicketChannel(Context.Channel))
 		{
-			await Context.RespondAsync("This command can only be invoked in a ticket channel!");
+			await Context.RespondAsync($"This command can only be invoked in a ticket channel! {CEmoji.GirBlep}");
 			return;
 		}
 		
