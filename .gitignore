@@ -9,5 +9,7 @@
 .vscode/
 .idea/
 
+Config.json
+
 *.sln.DotSettings.user
 

@@ -1,10 +1,11 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-global using static Gir.Misc.CLog;
+global using static Core.CLog;
 
+using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 
-namespace Gir.Misc;
+namespace Core;
 
 /**
  * Information how the log verbosity is represented in logger (e.g., text color or tag).
@@ -24,6 +25,7 @@ public struct SLogVerbosityInfo()
 public static class CLog
 {
 	public const LogLevel MinimumLogLevel = LogLevel.Information;
+	public const string LogTimestampFormat = "MMM dd yyyy - hh:mm:ss tt";
 	
 	// public static void LogCritical(string Text) { Log(LogLevel.Critical, Text); }
 	public static void LogError(string Text) { Log(LogLevel.Error, Text); }
@@ -39,10 +41,10 @@ public static class CLog
 		
 		if (!VerbosityInfo.TryGetValue(LogVerbosity, out SLogVerbosityInfo CurrentVerbosityInfo))
 		{
-			System.Diagnostics.Debug.Assert(false);
+			Debug.Assert(false);
 		}
 		
-		string Timestamp = DateTimeOffset.Now.ToString("MMM dd yyyy - hh:mm:ss tt");
+		string Timestamp = DateTimeOffset.Now.ToString(LogTimestampFormat);
 		Int32 ThreadId = Environment.CurrentManagedThreadId;
 		string Thread = $"{ThreadId}".PadRight(3);
 		string Category = $"{Thread} /Gir".PadRight(17);

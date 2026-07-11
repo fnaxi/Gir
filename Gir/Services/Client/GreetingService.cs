@@ -1,5 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
+using Core;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -8,9 +9,9 @@ using Gir.Misc;
 
 namespace Gir.Services.Client;
 
-public class CGreetingService
+public class CGreetingService : CServiceBase
 {
-	public CGreetingService(DiscordClient Client)
+	public CGreetingService(DiscordClient Client) : base(Client)
 	{
 		Client.GuildMemberAdded += Client_OnGuildMemberAdded;
 		Client.GuildMemberRemoved += Client_OnGuildMemberRemoved;

@@ -2,6 +2,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gir", "Gir\Gir.csproj", "{607EABEC-EDD2-439B-A311-80EB3218CDF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{40BA1852-E69F-4F5C-BC74-4E91D06D2045}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuromi", "Kuromi\Kuromi.csproj", "{71D6B28A-2DD2-4263-932A-DA387550F1C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{B30532F0-9ABC-435C-B518-6078FFC65EFE}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +22,13 @@ Global
 		{607EABEC-EDD2-439B-A311-80EB3218CDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{607EABEC-EDD2-439B-A311-80EB3218CDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{607EABEC-EDD2-439B-A311-80EB3218CDF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40BA1852-E69F-4F5C-BC74-4E91D06D2045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40BA1852-E69F-4F5C-BC74-4E91D06D2045}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40BA1852-E69F-4F5C-BC74-4E91D06D2045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40BA1852-E69F-4F5C-BC74-4E91D06D2045}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71D6B28A-2DD2-4263-932A-DA387550F1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71D6B28A-2DD2-4263-932A-DA387550F1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71D6B28A-2DD2-4263-932A-DA387550F1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71D6B28A-2DD2-4263-932A-DA387550F1C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

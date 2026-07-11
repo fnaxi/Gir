@@ -1,5 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
+using Core;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -7,9 +8,9 @@ using Gir.ID;
 
 namespace Gir.Services.Client;
 
-public class CHelpMenuService
+public class CHelpMenuService : CServiceBase
 {
-	public CHelpMenuService(DiscordClient Client)
+	public CHelpMenuService(DiscordClient Client) : base(Client)
 	{
 		Client.ComponentInteractionCreated += Client_OnComponentInteractionCreated;
 	}

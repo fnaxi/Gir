@@ -1,5 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
+using Core;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -7,12 +8,10 @@ using Gir.Misc;
 
 namespace Gir.Services.Client;
 
-public class CActivityService
+public class CActivityService : CServiceBase
 {
-	private readonly DiscordClient Client;
-	public CActivityService(DiscordClient InClient)
+	public CActivityService(DiscordClient InClient) : base(InClient)
 	{
-		Client = InClient;
 		Client.Ready += Client_OnReady;
 		
 		DiscordEmoji WaffleEmoji = DiscordEmoji.FromName(Client, ":waffle:");

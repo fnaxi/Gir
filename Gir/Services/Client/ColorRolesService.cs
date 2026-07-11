@@ -1,5 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
+using Core;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -8,9 +9,9 @@ using Gir.Misc;
 
 namespace Gir.Services.Client;
 
-public class CColorRolesService
+public class CColorRolesService : CServiceBase
 {
-	public CColorRolesService(DiscordClient Client)
+	public CColorRolesService(DiscordClient Client) : base(Client)
 	{
 		Client.GuildDownloadCompleted += Client_OnGuildDownloadCompleted;
 		Client.MessageReactionAdded += Client_OnMessageReactionAdded;

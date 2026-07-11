@@ -4,6 +4,7 @@
 #define GIR_HATES_SHORT_VIDEOS
 
 using System.Text.RegularExpressions;
+using Core;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -12,9 +13,9 @@ using Gir.Misc;
 
 namespace Gir.Services.Client;
 
-public class CAutoModerationService
+public class CAutoModerationService : CServiceBase
 {
-	public CAutoModerationService(DiscordClient Client)
+	public CAutoModerationService(DiscordClient Client) : base(Client)
 	{
 		// TODO: anti-raid/join gate
 		// Client.GuildMemberAdded

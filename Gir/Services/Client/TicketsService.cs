@@ -1,6 +1,7 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
 using System.Diagnostics;
+using Core;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -16,7 +17,7 @@ public class CTicket(string InName, Int32 InId, UInt64 InChannelId, UInt64 InGui
 	public readonly UInt64 GuildId = InGuildId;
 	public bool bClosed = bInClosed;
 
-	public static readonly string Prefix = "メticket-";
+	public static readonly string Prefix = "\u30E1ticket-";
 	public static readonly string ClosedSuffix = "-closed";
 
 	public async Task Open(DiscordGuild Guild, DiscordUser Moderator, DiscordMessage? Message = null)
@@ -47,7 +48,8 @@ public class CTicket(string InName, Int32 InId, UInt64 InChannelId, UInt64 InGui
 			await Channel.SendMessageAsync(Embed);
 		}
 		
-		LogInfo($"{Guild.Name} ({Guild.Id}): Re-opened ticket {Name} (ID/{Id}, Channel/{ChannelId})");
+		LogInfo($"{RemoveSpecialCharacters(Guild.Name)} ({Guild.Id}): " +
+		        $"Re-opened ticket {RemoveSpecialCharacters(Name)} (ID/{Id}, Channel/{ChannelId})");
 	}
 
 	public async Task Close(DiscordGuild Guild, DiscordUser Moderator, DiscordMessage? Message = null, string Reason = "No reason provided")
@@ -78,25 +80,31 @@ public class CTicket(string InName, Int32 InId, UInt64 InChannelId, UInt64 InGui
 			await Channel.SendMessageAsync(Embed);
 		}
 		
-		LogInfo($"{Guild.Name} ({Guild.Id}): Closed ticket {Name} (ID/{Id}, Channel/{ChannelId})");
+		LogInfo($"{RemoveSpecialCharacters(Guild.Name)} ({Guild.Id}): " +
+		        $"Closed ticket {RemoveSpecialCharacters(Name)} (ID/{Id}, Channel/{ChannelId})");
 	}
 }
 
-public class CTicketsService
+public class CTicketsService : CServiceBase
 {
-	public CTicketsService(DiscordClient Client)
+	public CTicketsService(DiscordClient Client) : base(Client)
 	{
 		Client.GuildDownloadCompleted += Client_OnGuildDownloadCompleted;
 		Client.ComponentInteractionCreated += Client_OnComponentInteractionCreated;
 	}
 
-	public static readonly List<CTicket> Tickets = [];
+	public readonly List<CTicket> Tickets = [];
+
+	public void TestFunc()
+	{
+		LogWarning("TEST FUNC()");
+	}
 
 	private async Task Client_OnGuildDownloadCompleted(DiscordClient Sender, GuildDownloadCompletedEventArgs Args)
 	{
 		foreach (DiscordGuild Guild in Args.Guilds.Values)
 		{
-			LogInfo($"Collecting tickets for {Guild.Name} ({Guild.Id}) guild");
+			LogInfo($"Collecting tickets for {RemoveSpecialCharacters(Guild.Name)} ({Guild.Id}) guild");
 			IReadOnlyList<DiscordChannel> Channels = await Guild.GetChannelsAsync();
 			foreach (DiscordChannel Channel in Channels)
 			{
@@ -117,7 +125,8 @@ public class CTicketsService
 			}
 			foreach (CTicket Ticket in Tickets)
 			{
-				LogInfo($"{Guild.Name} ({Guild.Id}): Found ticket {Ticket.Name} (ID/{Ticket.Id}, Channel/{Ticket.ChannelId}, Closed?/{Ticket.bClosed})");
+				LogInfo($"{RemoveSpecialCharacters(Guild.Name)} ({Guild.Id}): " +
+				        $"Found ticket: {RemoveSpecialCharacters(Ticket.Name)} (ID/{Ticket.Id}, Channel/{Ticket.ChannelId}, Closed?/{Ticket.bClosed})");
 			}
 		}
 	}
@@ -173,7 +182,7 @@ public class CTicketsService
 				await Message.PinAsync();
 
 				Tickets.Add(new CTicket(Name, Id, Channel.Id, Args.Guild.Id, false));
-				LogInfo($"Created new ticket ({Name}/{Id}, Channel/{Channel.Id}, Guild/{Args.Guild.Id})");
+				LogInfo($"Created new ticket ({RemoveSpecialCharacters(Name)}/{Id}, Channel/{Channel.Id}, Guild/{Args.Guild.Id})");
 
 				await Args.Interaction.CreateResponseAsync(InteractionResponseType.DeferredMessageUpdate);
 			} break;
@@ -213,17 +222,18 @@ public class CTicketsService
 		}
 	}
 
-	public static async Task DeleteTicket(DiscordGuild Guild, CTicket Ticket)
+	public async Task DeleteTicket(DiscordGuild Guild, CTicket Ticket)
 	{
 		DiscordChannel Channel = Guild.GetChannel(Ticket.ChannelId);
 		await Channel.DeleteAsync();
 		
 		Tickets.Remove(Ticket);
 		
-		LogInfo($"{Guild.Name} ({Guild.Id}): Deleted ticket {Ticket.Name} (ID/{Ticket.Id}, Channel/{Ticket.ChannelId}, Closed?/{Ticket.bClosed})");
+		LogInfo($"{RemoveSpecialCharacters(Guild.Name)} ({Guild.Id}): " +
+		        $"Deleted ticket {RemoveSpecialCharacters(Ticket.Name)} (ID/{Ticket.Id}, Channel/{Ticket.ChannelId}, Closed?/{Ticket.bClosed})");
 	}
 
-	public static bool IsTicketChannel(DiscordChannel Channel)
+	public bool IsTicketChannel(DiscordChannel Channel)
 	{
 		return Channel.Type == ChannelType.Text && Channel.Name.Contains(CTicket.Prefix) && Channel.Id != CChannel.TicketCreator;
 	}

@@ -6,10 +6,8 @@ namespace Gir.Services.Commands;
 
 public class CCommandErrorsService
 {
-	private readonly CommandsNextExtension Commands;
-	public CCommandErrorsService(CommandsNextExtension InCommands)
+	public CCommandErrorsService(CommandsNextExtension Commands)
 	{
-		Commands = InCommands;
 		Commands.CommandErrored += Commands_OnCommandErrored;
 	}
 	

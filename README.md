@@ -6,12 +6,16 @@
 <div align="center">
 
 <a href="https://github.com/fnaxi/Gir">
-	<img src="Images/Logo.png" alt="Logo" width="100" height="100">
+	<img src="Images/Gir.png" alt="Gir" width="100" height="100">
 </a>
 
-<h3 align="center"> Gir </h3>
+<a href="https://github.com/fnaxi/Gir">
+	<img src="Images/Kuromi.png" alt="Kuromi" width="100" height="100">
+</a>
+
+<h3 align="center"> Gir & Kuromi </h3>
 <p align="center">
-	C# Discord bot
+	C# <a href="https://discord.com">Discord</a> bots
 	<br />
 	<a href="https://github.com/fnaxi/Gir/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
 	&middot;
@@ -22,7 +26,9 @@
 
 ## About
 
-Gir - is all-in-one Discord bot built in C# designed to help moderate and manage a community.
+The repository contains two private [Discord](https://discord.com) bots built with C# (DSharpPlus) designed to help moderate and manage a community.
+
+Gir supports moderation, color roles, greetings, temporary voices, tickets etc. when Kuromi handles music.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

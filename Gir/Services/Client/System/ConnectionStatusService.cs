@@ -1,13 +1,14 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
+using Core;
 using DSharpPlus;
 using DSharpPlus.EventArgs;
 
 namespace Gir.Services.Client.System;
 
-public class CConnectionStatusService
+public class CConnectionStatusService : CServiceBase
 {
-	public CConnectionStatusService(DiscordClient Client)
+	public CConnectionStatusService(DiscordClient Client) : base(Client)
 	{
 		Client.Ready += Client_OnReady;
 		Client.GuildDownloadCompleted += Client_OnGuildDownloadCompleted;

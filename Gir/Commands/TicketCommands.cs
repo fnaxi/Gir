@@ -1,6 +1,7 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
 using System.Diagnostics;
+using Core;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -17,13 +18,16 @@ public class CTicketCommands : BaseCommandModule
 	public async Task Close(CommandContext Context,
 		[Description("The reason of closing the ticket")] string Reason = "No reason provided")
 	{
-		if (!CTicketsService.IsTicketChannel(Context.Channel))
+		CTicketsService? TicketsService = CServices.Get<CTicketsService>();
+		Debug.Assert(TicketsService != null);
+		
+		if (!TicketsService.IsTicketChannel(Context.Channel))
 		{
 			await Context.RespondAsync($"This command can only be invoked in a ticket channel! {CEmoji.GirBlep}");
 			return;
 		}
 
-		CTicket? Ticket = CTicketsService.Tickets.Find(t => t.ChannelId == Context.Channel.Id);
+		CTicket? Ticket = TicketsService.Tickets.Find(t => t.ChannelId == Context.Channel.Id);
 		Debug.Assert(Ticket != null);
 
 		await Ticket.Close(Context.Guild, Context.User, Context.Message, Reason);
@@ -38,13 +42,17 @@ public class CTicketCommands : BaseCommandModule
 			await NoRights(Context);
 			return;
 		}
-		if (!CTicketsService.IsTicketChannel(Context.Channel))
+		
+		CTicketsService? TicketsService = CServices.Get<CTicketsService>();
+		Debug.Assert(TicketsService != null);
+		
+		if (!TicketsService.IsTicketChannel(Context.Channel))
 		{
 			await Context.RespondAsync($"This command can only be invoked in a ticket channel! {CEmoji.GirBlep}");
 			return;
 		}
-
-		CTicket? Ticket = CTicketsService.Tickets.Find(t => t.ChannelId == Context.Channel.Id);
+		
+		CTicket? Ticket = TicketsService.Tickets.Find(t => t.ChannelId == Context.Channel.Id);
 		Debug.Assert(Ticket != null);
 
 		await Ticket.Open(Context.Guild, Context.User);
@@ -61,15 +69,19 @@ public class CTicketCommands : BaseCommandModule
 			await NoRights(Context);
 			return;
 		}
-		if (!CTicketsService.IsTicketChannel(Context.Channel))
+		
+		CTicketsService? TicketsService = CServices.Get<CTicketsService>();
+		Debug.Assert(TicketsService != null);
+		
+		if (!TicketsService.IsTicketChannel(Context.Channel))
 		{
 			await Context.RespondAsync($"This command can only be invoked in a ticket channel! {CEmoji.GirBlep}");
 			return;
 		}
 		
-		CTicket? Ticket = CTicketsService.Tickets.Find(t => t.ChannelId == Context.Channel.Id);
+		CTicket? Ticket = TicketsService.Tickets.Find(t => t.ChannelId == Context.Channel.Id);
 		Debug.Assert(Ticket != null);
 
-		await CTicketsService.DeleteTicket(Context.Guild, Ticket);
+		await TicketsService.DeleteTicket(Context.Guild, Ticket);
 	}
 }

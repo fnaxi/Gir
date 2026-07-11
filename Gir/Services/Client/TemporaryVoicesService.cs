@@ -1,5 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
+using Core;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -7,9 +8,9 @@ using Gir.ID;
 
 namespace Gir.Services.Client;
 
-public class CTemporaryVoicesService
+public class CTemporaryVoicesService : CServiceBase
 {
-	public CTemporaryVoicesService(DiscordClient Client)
+	public CTemporaryVoicesService(DiscordClient Client) : base(Client)
 	{
 		Client.GuildDownloadCompleted += Client_OnGuildDownloadCompleted;
 		Client.VoiceStateUpdated += Client_OnVoiceStateUpdated;

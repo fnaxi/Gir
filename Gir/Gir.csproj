@@ -5,7 +5,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <ApplicationIcon>..\Images\Logo.ico</ApplicationIcon>
+        <ApplicationIcon>..\Images\Gir.ico</ApplicationIcon>
         <AssemblyName>Gir</AssemblyName>
         <RootNamespace>Gir</RootNamespace>
         <PackageId>Gir</PackageId>
@@ -23,9 +23,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\Images\Logo.ico">
-        <Link>Logo.ico</Link>
+      <None Include="..\Images\Gir.ico">
+        <Link>Gir.ico</Link>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 
 </Project>
