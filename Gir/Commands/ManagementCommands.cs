@@ -64,7 +64,7 @@ public class CManagementCommands : BaseCommandModule
 					$"\n\n> * *Any attempt to circumvent the rules will result in a ban.*" +
 					$"\n\n> * *Moderators may issue penalties outside the rules if it helps maintain the order on the server.*" +
 					$"\n\n> * *If you witness a rule being broken, please report it using {TicketChannel.Mention}*" +
-					$"\n\n**Now go eat some waffles! 🧇 You've made it this far xD**",
+					$"\n\n**Now go eat some waffles! :waffle: You've made it this far xD**",
 				Color = YellowGreen
 			};
 			

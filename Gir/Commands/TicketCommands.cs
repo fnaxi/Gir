@@ -17,12 +17,6 @@ public class CTicketCommands : BaseCommandModule
 	public async Task Close(CommandContext Context,
 		[Description("The reason of closing the ticket")] string Reason = "No reason provided")
 	{
-		// TODO: revisit this
-		/*if (!CanModerate(Context))
-		{
-			await NoRights(Context);
-			return;
-		}*/
 		if (!CTicketsService.IsTicketChannel(Context.Channel))
 		{
 			await Context.RespondAsync($"This command can only be invoked in a ticket channel! {CEmoji.GirBlep}");
@@ -36,7 +30,7 @@ public class CTicketCommands : BaseCommandModule
 	}
 	
 	[Command("open")]
-	[Description("Opens the specified ticket")]
+	[Description("Re-opens the specified ticket")]
 	public async Task Open(CommandContext Context)
 	{
 		if (!CanModerate(Context.Member))
@@ -62,11 +56,11 @@ public class CTicketCommands : BaseCommandModule
 	public async Task Delete(CommandContext Context,
 		[Description("The reason of deleting the ticket")] string Reason = "No reason provided")
 	{
-		/*if (!CanModerate(Context.Member))
+		if (!IsAdmin(Context.Member))
 		{
 			await NoRights(Context);
 			return;
-		}*/
+		}
 		if (!CTicketsService.IsTicketChannel(Context.Channel))
 		{
 			await Context.RespondAsync($"This command can only be invoked in a ticket channel! {CEmoji.GirBlep}");

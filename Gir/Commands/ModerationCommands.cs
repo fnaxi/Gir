@@ -12,6 +12,8 @@ namespace Gir.Commands;
 
 public static class CModeration
 {
+	// TODO: move mute/unmute here
+	
 	public class CWarnSummary(Int32 InWarnsCount, string InPunishmentSummary)
 	{
 		public readonly Int32 WarnsCount = InWarnsCount;
@@ -312,6 +314,7 @@ public class CModerationCommands : BaseCommandModule
 
 		if (await IsTargetingBotOrSelf(Context, Member)) return;
 
+		Debug.Assert(Context.Member != null);
 		CModeration.CWarnSummary Summary = await CModeration.Warn(Context.Guild, Context.Member, Member, Context.Message, Reason);
 		if (Summary.WarnsCount != 3)
 		{
@@ -444,6 +447,7 @@ public class CModerationCommands : BaseCommandModule
 
 		if (await IsTargetingBotOrSelf(Context, Member)) return;
 
+		Debug.Assert(Context.Member != null);
 		await CModeration.Ban(Context.Guild, Context.Member, Member, Context.Message, Reason);
 
 		DiscordEmbedBuilder ModLogEmbed = new DiscordEmbedBuilder()

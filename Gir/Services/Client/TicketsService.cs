@@ -47,7 +47,7 @@ public class CTicket(string InName, Int32 InId, UInt64 InChannelId, UInt64 InGui
 			await Channel.SendMessageAsync(Embed);
 		}
 		
-		LogInfo($"{Guild.Name} ({Guild.Id}): Re-opened ticket {Name} (ID/{Id}, Channel/{ChannelId}, Closed?/{bClosed})");
+		LogInfo($"{Guild.Name} ({Guild.Id}): Re-opened ticket {Name} (ID/{Id}, Channel/{ChannelId})");
 	}
 
 	public async Task Close(DiscordGuild Guild, DiscordUser Moderator, DiscordMessage? Message = null, string Reason = "No reason provided")
@@ -78,7 +78,7 @@ public class CTicket(string InName, Int32 InId, UInt64 InChannelId, UInt64 InGui
 			await Channel.SendMessageAsync(Embed);
 		}
 		
-		LogInfo($"{Guild.Name} ({Guild.Id}): Closed ticket {Name} (ID/{Id}, Channel/{ChannelId}, Closed?/{bClosed})");
+		LogInfo($"{Guild.Name} ({Guild.Id}): Closed ticket {Name} (ID/{Id}, Channel/{ChannelId})");
 	}
 }
 
@@ -106,7 +106,8 @@ public class CTicketsService
 				if (Tickets.Any(t => t.Id == ID))
 				{
 					CTicket? OriginalTicket = Tickets.Find(t => t.Id == ID);
-					
+
+					Debug.Assert(OriginalTicket != null);
 					LogError($"Found two tickets with the same ID: {OriginalTicket.Name} / {Channel.Name}");
 					continue;
 				}

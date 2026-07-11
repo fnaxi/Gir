@@ -20,7 +20,7 @@ public static class CCommandUtils
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
 		{
 			Title = "You Earth creatures are strange and smelly",
-			Description = $"You're not the one who can ask his honor zim{CEmoji.GirBlep} for something like that!",
+			Description = $"You're not the one who can ask his honor gir{CEmoji.GirBlep} for something like that!",
 			Color = YellowGreen
 		};
 		await Context.Channel.SendMessageAsync(Embed);

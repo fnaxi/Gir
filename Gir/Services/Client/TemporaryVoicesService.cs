@@ -15,6 +15,8 @@ public class CTemporaryVoicesService
 		Client.VoiceStateUpdated += Client_OnVoiceStateUpdated;
 	}
 	
+	private const string TempVoiceName = "Room";
+	
 	private async Task Client_OnGuildDownloadCompleted(DiscordClient Sender, GuildDownloadCompletedEventArgs Args)
 	{
 		foreach (DiscordGuild? Guild in Sender.Guilds.Values)
@@ -23,14 +25,29 @@ public class CTemporaryVoicesService
 
 			foreach (DiscordChannel? Channel in Guild.Channels.Values)
 			{
-				if (Channel == null || Channel.Type != ChannelType.Voice || !IsTempVoice(Channel)) continue;
+				if (Channel == null || Channel.Type != ChannelType.Voice) continue;
 
+				if (Channel.Id == CChannel.CreateVoice)
+				{
+					DiscordChannel CreateVoiceChannel = Guild.GetChannel(CChannel.CreateVoice);
+					foreach (DiscordMember? Member in Channel.Users)
+					{
+						// TODO: This code repeats Client_OnVoiceStateUpdated
+						string Name = $"🜋 {Member.DisplayName}'s {TempVoiceName}";
+						DiscordChannel NewChannel = await Guild.CreateVoiceChannelAsync(Name, Guild.GetChannel(CCategory.VoiceChannels), null, CreateVoiceChannel.UserLimit);
+
+						await Member.ModifyAsync(x => x.VoiceChannel = NewChannel);
+					}
+					continue;
+				}
+				
+				if (!IsTempVoice(Channel) || Channel.Users.Count != 0) continue;
+				
 				await Channel.DeleteAsync();
 			}
 		}
 	}
-
-	private const string TempVoiceName = "Room";
+	
 	private async Task Client_OnVoiceStateUpdated(DiscordClient Sender, VoiceStateUpdateEventArgs Args)
 	{
 		DiscordGuild Guild = Args.Guild;

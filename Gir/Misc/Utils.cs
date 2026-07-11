@@ -3,6 +3,7 @@
 global using static Gir.Misc.CUtils;
 
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using Gir.ID;
@@ -27,12 +28,17 @@ public static class CUtils
 		Debug.Assert(Member != null);
 		return Member.Permissions.HasFlag(Permissions.Administrator);
 	}
+
+	public static bool IsBotAlive(DiscordClient Client)
+	{
+		return !(Client.Ping > 3000); // TODO: Ambitious
+	}
 	
 	/*----------------------------------------------------------------------------
 		Misc
 	----------------------------------------------------------------------------*/
 	
-	/** Inverts String.IsNullOrWhiteSpace for cleaner checks. */
+	/** Inverts IsNullOrWhiteSpace() for cleaner checks. */
 	public static bool IsTextValid(string InText)
 	{
 		return !String.IsNullOrWhiteSpace(InText);
@@ -50,5 +56,10 @@ public static class CUtils
 	{
 		Int32 Index = RandomSeed.Next(Options.Count);
 		return Options[Index];
+	}
+	
+	public static string RemoveSpecialCharacters(string Text)
+	{
+		return Regex.Replace(Text, @"[^a-zA-Z0-9\s.,!?-]", string.Empty);
 	}
 }

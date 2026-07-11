@@ -16,21 +16,6 @@ public class CHelpMenuService
 
 	private const string HelpTitlePrefix = $"{CEmoji.GirDance} Gir |";
 
-	public static DiscordEmbedBuilder MakeMainMenuEmbed(DiscordMember Member)
-	{
-		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
-		{
-			Title = $"{HelpTitlePrefix} Help Menu {CEmoji.BmoDance}",
-			Description = 
-				$"Welcome {Member.Mention}!\n" + 
-				$"Use the dropdown menu below to navigate through command categories {CEmoji.GirBlep}",
-			Color = YellowGreen
-		};
-		Embed.WithFooter($"Requested by {Member.DisplayName}", Member.AvatarUrl);
-		Embed.WithTimestamp(DateTime.UtcNow);
-		return Embed;
-	}
-
 	private async Task Client_OnComponentInteractionCreated(DiscordClient Sender, ComponentInteractionCreateEventArgs Args)
 	{
 		if (!Args.Id.StartsWith("SID_HelpMenu_")) return;
@@ -126,5 +111,20 @@ public class CHelpMenuService
 			.SelectMany<DiscordActionRowComponent, DiscordComponent>(row => row.Components));
 		
 		await Args.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage, InteractionResponse);
+	}
+	
+	public static DiscordEmbedBuilder MakeMainMenuEmbed(DiscordMember Member)
+	{
+		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
+		{
+			Title = $"{HelpTitlePrefix} Help Menu {CEmoji.BmoDance}",
+			Description = 
+				$"Welcome {Member.Mention}!\n" + 
+				$"Use the dropdown menu below to navigate through command categories {CEmoji.GirBlep}",
+			Color = YellowGreen
+		};
+		Embed.WithFooter($"Requested by {Member.DisplayName}", Member.AvatarUrl);
+		Embed.WithTimestamp(DateTime.UtcNow);
+		return Embed;
 	}
 }

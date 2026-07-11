@@ -18,7 +18,7 @@ public class CTalkingService
 	{
 		if (Args.Author.IsBot) return;
 
-		// TODO: Bot should react to mentioning "zim" in a message
+		// TODO: Bot should react to mentioning "gir" in a message
 		
 		if (Args.Message.MentionedUsers.Any(uz => uz.Id == Sender.CurrentUser.Id))
 		{

@@ -4,11 +4,9 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using Gir.Commands;
 using Gir.Config;
-using Gir.Misc;
 using Gir.Services.Client;
 using Gir.Services.Client.System;
 using Gir.Services.Commands;
-using Microsoft.Extensions.Logging;
 
 namespace Gir;
 
@@ -53,7 +51,7 @@ public abstract class CGir
 			TokenType = TokenType.Bot,
 			AutoReconnect = true,
 			
-			LogUnknownEvents = false, // TODO: Replace with true later
+			LogUnknownEvents = true,
 			MinimumLogLevel = MinimumLogLevel,
 			LogTimestampFormat = "MMM dd yyyy - hh:mm:ss tt"
 		};
@@ -91,7 +89,7 @@ public abstract class CGir
 	
 	private static void SetupCommands(string Prefix)
 	{
-		CommandsNextConfiguration CommandsConfig = new CommandsNextConfiguration()
+		CommandsNextConfiguration Config = new CommandsNextConfiguration()
 		{
 			StringPrefixes = [Prefix],
 			
@@ -101,7 +99,7 @@ public abstract class CGir
 			
 			EnableDefaultHelp = false
 		};
-		Commands = Client.UseCommandsNext(CommandsConfig);
+		Commands = Client.UseCommandsNext(Config);
 
 		RegisterCommandModule<CMiscCommands>();
 		RegisterCommandModule<CModerationCommands>();
