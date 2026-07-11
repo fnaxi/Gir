@@ -1,7 +1,7 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
 using System.Text.RegularExpressions;
-using Core;
+using Core.Services;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -19,7 +19,7 @@ public class CTalkingService : CServiceBase
 	}
 
 	private const bool bEnableRandomMessages = true;
-	private const UInt16 RandomMessageInterval = 1600;
+	private const UInt16 RandomMessageInterval = 3600;
 
 	private async Task Client_OnReady(DiscordClient Sender, ReadyEventArgs Args)
 	{

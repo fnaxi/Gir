@@ -2,7 +2,7 @@
 
 using DSharpPlus;
 
-namespace Core;
+namespace Core.Services;
 
 public static class CServices // TODO: CServiceManager?
 {

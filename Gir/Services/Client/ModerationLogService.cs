@@ -1,7 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-using Core;
-using Core.Config;
+using Core.Services;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -19,7 +18,8 @@ public class CModerationLogService : CServiceBase
 	
 	private async Task Client_OnMessageUpdated(DiscordClient Sender, MessageUpdateEventArgs Args)
 	{
-		if (Args.Message.Author.IsBot || Args.Message.Content == Args.MessageBefore.Content || Args.Message.Content.Contains("CConfig.Prefix")) return;
+		// TODO: IMPORTANT! replace "gir " with actual prefix from the config
+		if (Args.Message.Author.IsBot || Args.Message.Content == Args.MessageBefore.Content || Args.Message.Content.Contains("gir ")) return;
 		
 		DiscordChannel ModLogChannel = Args.Guild.GetChannel(CChannel.ModLog);
 		
@@ -39,7 +39,7 @@ public class CModerationLogService : CServiceBase
 	
 	private async Task Client_OnMessageDeleted(DiscordClient Sender, MessageDeleteEventArgs Args)
 	{
-		if (Args.Message.Author.IsBot || Args.Message.Author == null || Args.Message.Content.Contains("CConfig.Prefix")) return;
+		if (Args.Message.Author.IsBot || Args.Message.Author == null || Args.Message.Content.Contains("gir ")) return;
 		
 		DiscordChannel ModLogChannel = Args.Guild.GetChannel(CChannel.ModLog);
 		

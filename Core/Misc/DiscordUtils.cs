@@ -1,13 +1,13 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-global using static Gir.Misc.CDiscordUtils;
+global using static Core.CDiscordUtils;
 
 using System.Diagnostics;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using Gir.ID;
 
-namespace Gir.Misc;
+namespace Core;
 
 public static class CDiscordUtils
 {
@@ -17,7 +17,6 @@ public static class CDiscordUtils
 		return IsAdmin(Member) || Member.Roles.Any(r => r.Id is CRole.Admin or CRole.Moderator);
 	}
 	
-	// TODO: use everywhere
 	public static bool IsAdmin(DiscordMember? Member)
 	{
 		Debug.Assert(Member != null);

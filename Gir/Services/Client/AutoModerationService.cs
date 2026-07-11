@@ -1,15 +1,14 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-//#define MODERATORS_ARE_IMMUNE
+#define MODERATORS_ARE_IMMUNE
 #define GIR_HATES_SHORT_VIDEOS
 
 using System.Text.RegularExpressions;
-using Core;
+using Core.Services;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using Gir.Commands;
-using Gir.Misc;
 
 namespace Gir.Services.Client;
 

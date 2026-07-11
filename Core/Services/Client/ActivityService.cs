@@ -1,32 +1,20 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-using Core;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
-using Gir.Misc;
 
-namespace Gir.Services.Client;
+namespace Core.Services.Client;
 
 public class CActivityService : CServiceBase
 {
 	public CActivityService(DiscordClient InClient) : base(InClient)
 	{
 		Client.Ready += Client_OnReady;
-		
-		DiscordEmoji WaffleEmoji = DiscordEmoji.FromName(Client, ":waffle:");
-		DiscordEmoji MonsterEmoji = DiscordEmoji.FromName(Client, ":coffee:");
-		DiscordEmoji ConquestEmoji = DiscordEmoji.FromName(Client, ":crossed_swords:");
-		Statuses =
-		[
-			$"{WaffleEmoji} Eating tasty waffles",
-			$"{MonsterEmoji} Drinking a white Monster",
-			$"{ConquestEmoji} Conquering the world!"
-		];
 	}
 	
-	private const UInt16 UpdateTime = 720;
-	private readonly List<string> Statuses;
+	public UInt16 UpdateTime = 720;
+	public List<string> Statuses;
 	
 	private async Task Client_OnReady(DiscordClient Sender, ReadyEventArgs Args)
 	{

@@ -1,6 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-using Core;
+using Core.Services;
 using DSharpPlus;
 using DSharpPlus.EventArgs;
 
