@@ -43,7 +43,7 @@ cd Gir
 
 ### 2. Set bot token
 
-Copy `Gir/Config/Config.json` to `Gir/bin/{Debug/Release}/net9.0/` and change field `Token` to the token you want to use.
+Copy `Core/Config/Config.json` to the root and change fields `MainToken` and `MusicToken` to the tokens you want to use. Then run `CopyConfigToBinaries.bat` script.
 
 ### 3. Open solution
 
