@@ -28,6 +28,8 @@
 
 The repository contains two private [Discord](https://discord.com) bots built with C# (DSharpPlus) designed to help moderate and manage a community.
 
+A private means it heavily relies on IDs that has the server the bot was created for so it's pointless to use it in any other guild.
+
 Gir supports moderation, color roles, greetings, temporary voices, tickets etc. when Kuromi handles music.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
