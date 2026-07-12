@@ -26,6 +26,7 @@ public static class CLog
 {
 	public const LogLevel MinimumLogLevel = LogLevel.Information;
 	public const string LogTimestampFormat = "MMM dd yyyy - hh:mm:ss tt";
+	public static string LogCategory = "Default";
 	
 	// public static void LogCritical(string Text) { Log(LogLevel.Critical, Text); }
 	public static void LogError(string Text) { Log(LogLevel.Error, Text); }
@@ -47,7 +48,7 @@ public static class CLog
 		string Timestamp = DateTimeOffset.Now.ToString(LogTimestampFormat);
 		Int32 ThreadId = Environment.CurrentManagedThreadId;
 		string Thread = $"{ThreadId}".PadRight(3);
-		string Category = $"{Thread} /Gir".PadRight(17);
+		string Category = $"{Thread} /{LogCategory}".PadRight(17);
 		
 		Console.Write($"[{Timestamp}] [{Category}] ");
 			

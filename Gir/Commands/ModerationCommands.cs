@@ -1,6 +1,7 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
 using System.Diagnostics;
+using Core.ID;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -103,7 +104,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (await IsTargetingBotOrSelf(Context, Member)) return;
+		if (await IsTargetingBotOrSelf(Context, Member, $"{RandomString(CQuote.BotOrSelfBan)} {CEmoji.GirDance}")) return;
 		
 		DateTimeOffset TimeoutTime = DateTimeOffset.UtcNow.Subtract(ParseTime(Time));
 		if ( (DateTimeOffset.UtcNow - TimeoutTime).TotalDays > 28 )
@@ -151,7 +152,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 		
-		if (await IsTargetingBotOrSelf(Context, Member)) return;
+		if (await IsTargetingBotOrSelf(Context, Member, $"{RandomString(CQuote.BotOrSelfBan)} {CEmoji.GirDance}")) return;
 
 		if (!Member.CommunicationDisabledUntil.HasValue || Member.CommunicationDisabledUntil.Value <= DateTimeOffset.UtcNow)
 		{
@@ -312,7 +313,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (await IsTargetingBotOrSelf(Context, Member)) return;
+		if (await IsTargetingBotOrSelf(Context, Member, $"{RandomString(CQuote.BotOrSelfBan)} {CEmoji.GirDance}")) return;
 
 		Debug.Assert(Context.Member != null);
 		CModeration.CWarnSummary Summary = await CModeration.Warn(Context.Guild, Context.Member, Member, Context.Message, Reason);
@@ -347,7 +348,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (await IsTargetingBotOrSelf(Context, Member)) return;
+		if (await IsTargetingBotOrSelf(Context, Member, $"{RandomString(CQuote.BotOrSelfBan)} {CEmoji.GirDance}")) return;
 
 		DiscordRole WarnedOnceRole = Context.Guild.GetRole(CRole.WarnedOnce);
 		DiscordRole WarnedTwiceRole = Context.Guild.GetRole(CRole.WarnedTwice);
@@ -402,7 +403,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (await IsTargetingBotOrSelf(Context, Member)) return;
+		if (await IsTargetingBotOrSelf(Context, Member, $"{RandomString(CQuote.BotOrSelfBan)} {CEmoji.GirDance}")) return;
 		
 		await Member.RemoveAsync(Reason);
 		
@@ -445,7 +446,7 @@ public class CModerationCommands : BaseCommandModule
 			return;
 		}
 
-		if (await IsTargetingBotOrSelf(Context, Member)) return;
+		if (await IsTargetingBotOrSelf(Context, Member, $"{RandomString(CQuote.BotOrSelfBan)} {CEmoji.GirDance}")) return;
 
 		Debug.Assert(Context.Member != null);
 		await CModeration.Ban(Context.Guild, Context.Member, Member, Context.Message, Reason);

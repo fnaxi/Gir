@@ -1,5 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
+using Core.ID;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;

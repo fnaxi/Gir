@@ -1,11 +1,10 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-global using static Core.CUtils;
-
+global using static Core.Misc.CUtils;
 using System.Text.RegularExpressions;
 using DSharpPlus.Entities;
 
-namespace Core;
+namespace Core.Misc;
 
 public static class CUtils
 {
@@ -21,6 +20,7 @@ public static class CUtils
 	}
 
 	public static DiscordColor YellowGreen = new("#9ACD32");
+	public static DiscordColor CutePink = new("#eea1e3");
 	
 	private static readonly Random RandomSeed = new();
 	public static string RandomString(List<string> Options)

@@ -1,15 +1,15 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-global using static Gir.Commands.CCommandUtils;
+global using static Core.Commands.CCommandUtils;
 
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Core.ID;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using Gir.ID;
-using Gir.Misc;
 
-namespace Gir.Commands;
+namespace Core.Commands;
 
 public static class CCommandUtils
 {
@@ -20,7 +20,7 @@ public static class CCommandUtils
 		DiscordEmbedBuilder Embed = new DiscordEmbedBuilder()
 		{
 			Title = "You Earth creatures are strange and smelly",
-			Description = $"You're not the one who can ask his honor gir{CEmoji.GirBlep} for something like that!",
+			Description = $"You're not the one who can ask his honor gir for something like that!",
 			Color = YellowGreen
 		};
 		await Context.Channel.SendMessageAsync(Embed);
@@ -31,12 +31,12 @@ public static class CCommandUtils
 		return Channel.Id is not (CChannel.BotChat or CChannel.Test);
 	}
 
-	public static async Task<bool> IsTargetingBotOrSelf(CommandContext Context, DiscordMember Member)
+	public static async Task<bool> IsTargetingBotOrSelf(CommandContext Context, DiscordMember Member, string Text)
 	{
 		Debug.Assert(Context.Member != null);
 		if (Member.Id == Context.Client.CurrentUser.Id || Member.Id == Context.Member.Id)
 		{
-			await Context.RespondAsync($"{RandomString(CQuote.BotOrSelfBan)} {CEmoji.GirDance}");
+			await Context.RespondAsync($"{Text}");
 			return true;
 		}
 		
@@ -51,6 +51,11 @@ public static class CCommandUtils
 			return SentInBotChannel(Channel);
 		}
 		return false;
+	}
+	
+	public static bool IsVoiceChannel(DiscordChannel? Channel)
+	{
+		return Channel != null && Channel.Type == ChannelType.Voice;
 	}
 	
 	public static TimeSpan ParseTime(string Input)

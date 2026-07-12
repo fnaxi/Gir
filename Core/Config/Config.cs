@@ -14,7 +14,7 @@ public class CConfig
 	
 	private const string Name = "Config.ini";
 	
-	public static CConfig Parse(string InPath) // TODO: Move IDs to Config.json
+	public static CConfig Parse(string InPath) // TODO: Move IDs to Config.ini
 	{
 		IConfiguration Configuration = new ConfigurationBuilder()
 			.SetBasePath(InPath)

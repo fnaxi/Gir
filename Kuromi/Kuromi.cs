@@ -1,10 +1,12 @@
 ﻿// CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-global using static Core.CUtils;
-global using static Core.CDiscordUtils;
+global using static Core.Misc.CUtils;
+global using static Core.Misc.CDiscordUtils;
+global using static Core.Commands.CCommandUtils;
 global using static Core.CLog;
 
 using Core;
+using Core.Commands;
 using Core.Services;
 using Core.Services.Client;
 using DSharpPlus.Entities;
@@ -15,29 +17,32 @@ namespace Kuromi;
 
 public class CKuromiBot : CBotBase
 {
-	// TODO: help command framework?
-	
 	protected override void SetupServices()
 	{
 		CActivityService ActivityService = new CActivityService(Client);
 		{
 			DiscordEmoji MotorcycleEmoji = DiscordEmoji.FromName(Client, ":motorcycle:");
+			DiscordEmoji CoffeeEmoji = DiscordEmoji.FromName(Client, ":coffee:");
 			ActivityService.Statuses =
 			[
 				$"{MotorcycleEmoji} Driving the bike",
-				// TODO: more statuses
+				$"{CoffeeEmoji} Drinking tasty coffee"
 			];
 		}
 		
 		CServices.Setup(
 		[
 			ActivityService,
-			new CMusicPlayingService(Client)
+			new CLavalinkService(Client)
 		]);
 	}
 
-	protected override void RegisterCommandModules()
+	protected override void RegisterCommands()
 	{
+		// Core
+		RegisterCommandModule<CCoreCommands>();
+
+		// Kuromi
 		RegisterCommandModule<CMusicCommands>();
 	}
 }
@@ -46,6 +51,7 @@ internal abstract class CEntryPoint
 {
 	private static Task Main(string[] Args)
 	{
+		LogCategory = "KuromiApp";
 		return new CKuromiBot().Start(EBotType.Music);
 	}
 }

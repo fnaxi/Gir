@@ -1,6 +1,6 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-namespace Gir.ID;
+namespace Core.ID;
 
 public static class CChannel
 {

@@ -1,13 +1,12 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-global using static Core.CDiscordUtils;
-
+global using static Core.Misc.CDiscordUtils;
 using System.Diagnostics;
+using Core.ID;
 using DSharpPlus;
 using DSharpPlus.Entities;
-using Gir.ID;
 
-namespace Core;
+namespace Core.Misc;
 
 public static class CDiscordUtils
 {

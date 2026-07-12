@@ -1,6 +1,7 @@
 ﻿// CopyRight https://github.com/fnaxi. All Rights Reserved.
 
 using Core.Config;
+using Core.Services;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 
@@ -43,15 +44,17 @@ public class CBotBase
 		SetupServices();
 
 		await Client.ConnectAsync();
+		await CServices.Connect();
+		
 		await Task.Delay(-1);
 	}
 	
-	protected virtual void SetupServices() 
+	protected virtual void SetupServices()
 	{ }
 	
-	protected virtual void RegisterCommandModules()
+	protected virtual void RegisterCommands()
 	{ }
-
+	
 	private void SetupCommands(string Prefix)
 	{
 		CommandsNextConfiguration Config = new CommandsNextConfiguration()
@@ -66,7 +69,7 @@ public class CBotBase
 		};
 		Commands = Client.UseCommandsNext(Config);
 
-		RegisterCommandModules();
+		RegisterCommands();
 	}
 	
 	protected void RegisterCommandModule<T>() where T : BaseCommandModule
