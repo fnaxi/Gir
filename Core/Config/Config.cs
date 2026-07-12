@@ -1,34 +1,39 @@
 // CopyRight https://github.com/fnaxi. All Rights Reserved.
 
-using System.Diagnostics;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Core.Config;
 
-public class CConfig(string InMainToken, string InMusicToken, string InMainPrefix, string InMusicPrefix)
+public class CConfig
 {
-	public string MainToken = InMainToken;
-	public string MusicToken = InMusicToken;
-
-	public string MainPrefix = InMainPrefix;
-	public string MusicPrefix = InMusicPrefix;
+	public string MainToken { get; init; } = "";
+    public string MusicToken { get; init; } = "";
+    
+    public string MainPrefix { get; init; } = "";
+    public string MusicPrefix { get; init; } = "";
 	
-	private const string Name = "Config.json";
+	private const string Name = "Config.ini";
 	
 	public static CConfig Parse(string InPath) // TODO: Move IDs to Config.json
 	{
-		StreamReader Stream = new StreamReader(Path.Combine(InPath, Name));
-		
-		string Json = Stream.ReadToEnd();
-		Stream.Close();
-		
-		CConfig? Config = JsonConvert.DeserializeObject<CConfig>(Json);
-		Debug.Assert(Config != null);
-		
+		IConfiguration Configuration = new ConfigurationBuilder()
+			.SetBasePath(InPath)
+			.AddIniFile(Name, optional: false, reloadOnChange: false)
+			.Build();
+
+		CConfig Config = new CConfig
+		{
+			MainToken = Configuration["MainBot:Token"] ?? "",
+			MainPrefix = Configuration["MainBot:Prefix"] ?? "",
+			
+			MusicToken = Configuration["MusicBot:Token"] ?? "",
+			MusicPrefix = Configuration["MusicBot:Prefix"] ?? ""
+		};
+
 		LogInfo("Parsed config");
 		LogDebug($"Tokens: '{Config.MainToken}' / '{Config.MusicToken}'");
 		LogInfo($"Prefixes: '{Config.MainPrefix}' / '{Config.MusicPrefix}'");
-		
+
 		return Config;
 	}
 

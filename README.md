@@ -43,7 +43,7 @@ cd Gir
 
 ### 2. Set bot token
 
-Copy `Core/Config/Config.json` to the root and change fields `MainToken` and `MusicToken` to the tokens you want to use. Then run `CopyConfigToBinaries.bat` script.
+Copy `Core/Config/Config.ini` to the root and change token fields to the tokens you want to use. Then run `CopyConfigToBinaries.bat` script.
 
 ### 3. Open solution
 

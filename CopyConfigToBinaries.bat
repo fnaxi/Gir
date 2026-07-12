@@ -2,7 +2,7 @@
 
 setlocal enabledelayedexpansion
 
-set "CONFIG_FILE=Config.json"
+set "CONFIG_FILE=Config.ini"
 
 set "DIR1=Gir"
 set "DIR2=Kuromi"

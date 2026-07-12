@@ -9,7 +9,8 @@
 .vscode/
 .idea/
 
-Config.json
+Config.ini
+!Core/Config/Config.ini
 
 *.sln.DotSettings.user
 
