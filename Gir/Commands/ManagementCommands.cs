@@ -79,9 +79,7 @@ public class CManagementCommands : BaseCommandModule
 		public async Task SendColorRoles(CommandContext Context)
 		{
 			const string Text =
-				"Choose your **Robe** below to claim your place in the Mid-Atlantic Conclave!" +
-				"\n" +
-				"\n*Remember, Commandments dictate: Thou shalt choose your hue with pride. (And no, black is not an option)*";
+				"Choose your **Robe** below to show off your favorite color!";
 			
 			await Context.Channel.SendMessageAsync(Text);
 			await Context.Message.DeleteAsync();

@@ -18,12 +18,8 @@ public class CBotBase
 	protected DiscordClient Client = null!;
 	protected CommandsNextExtension Commands { get; private set; } = null!;
 	
-	private EBotType BotType;
-	
-	public async Task Start(EBotType InBotType)
+	public async Task Start(EBotType BotType)
 	{
-		BotType = InBotType;
-		
 		CConfig Config = CConfig.Parse(Directory.GetCurrentDirectory());
 		DiscordConfiguration DisConfig = new DiscordConfiguration
 		{

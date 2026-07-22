@@ -75,19 +75,16 @@ public class CMusicCommands : BaseCommandModule
 		LavalinkGuildConnection Connection = Node.GetGuildConnection(Context.Guild);
 		if (Connection == null)
 		{
-			await Context.RespondAsync($"Failed to connect to the Lavalink! {CEmoji.Kuromi}");
+			await Context.RespondAsync($"Failed to connect to the Lavalink! {CEmoji.Chunibyo}");
 			return;
 		}
 		
-		// TODO: use spotify instead
-		LavalinkLoadResult LoadResult = await Node.Rest.GetTracksAsync(Query, LavalinkSearchType.Youtube);
+		LavalinkLoadResult LoadResult = await Node.Rest.GetTracksAsync(Query);
 		if (LoadResult.LoadResultType is LavalinkLoadResultType.NoMatches or LavalinkLoadResultType.LoadFailed)
 		{
-			await Context.RespondAsync($"Can't find music with query: {Query}! {CEmoji.Kuromi}");
+			await Context.RespondAsync($"Can't find music with query: {Query}! {CEmoji.Chunibyo}");
 			return;
 		}
-		
-		// TODO: give 2-3 results to choose from
 		
 		LavalinkTrack Song = LoadResult.Tracks.First();
 		await Connection.PlayAsync(Song);
@@ -96,7 +93,7 @@ public class CMusicCommands : BaseCommandModule
 		{
 			Title = $"Joined {Channel.Name} channel",
 			Description = 
-				$"Now playing: {Song.Title} {CEmoji.Chunibyo}. \n" +
+				$"Now streaming: {Song.Title} {CEmoji.Chunibyo}. \n" +
 				$"Author: {Song.Author}. \n" +
 				$"URL: {Song.Uri}",
 			Color = CutePink
@@ -157,16 +154,16 @@ public class CMusicCommands : BaseCommandModule
 	
 	private async Task NotInVoiceChannel(CommandContext Context)
 	{
-		await Context.RespondAsync($"You should enter the voice channel first! {CEmoji.Kuromi}");
+		await Context.RespondAsync($"You should enter the voice channel first! {CEmoji.Chunibyo}");
 	}
 
 	private async Task BadLavalinkConnection(CommandContext Context)
 	{
-		await Context.RespondAsync($"Connection with the Lavalink is not established! {CEmoji.Kuromi}");
+		await Context.RespondAsync($"Connection with the Lavalink is not established! {CEmoji.Chunibyo}");
 	}
 	private async Task NothingIsStreaming(CommandContext Context)
 	{
-		await Context.RespondAsync($"Nothing is streaming right now! {CEmoji.Kuromi}");
+		await Context.RespondAsync($"Nothing is streaming right now! {CEmoji.Chunibyo}");
 	}
 	
 	private bool IsLavalinkValid(LavalinkExtension? Lavalink)

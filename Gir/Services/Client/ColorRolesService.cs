@@ -17,7 +17,7 @@ public class CColorRolesService : CServiceBase
 		Client.MessageReactionRemoved += Client_OnMessageReactionRemoved;
 	}
 
-	private const UInt64 MessageId = 1510595309506396181;
+	private const UInt64 MessageId = 1527571562402807839;
 	private Dictionary<DiscordEmoji, UInt64> ColorRolesMap = null!;
 	
 	private async Task Client_OnGuildDownloadCompleted(DiscordClient Sender, GuildDownloadCompletedEventArgs Args)
