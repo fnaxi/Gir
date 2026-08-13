@@ -30,7 +30,6 @@ public class CTemporaryVoicesService : CServiceBase
 
 				if (Channel.Id == CChannel.CreateVoice)
 				{
-					DiscordChannel CreateVoiceChannel = Guild.GetChannel(CChannel.CreateVoice);
 					foreach (DiscordMember? Member in Channel.Users)
 					{
 						DiscordChannel NewChannel = await CreateTempVoice(Guild, Member.DisplayName);
@@ -53,8 +52,8 @@ public class CTemporaryVoicesService : CServiceBase
 		
 		if (Args.After?.Channel != null && Args.After.Channel.Id == CChannel.CreateVoice)
 		{
-			DiscordMember  Member     = await Guild.GetMemberAsync(Args.User.Id);
-			DiscordChannel NewChannel = await CreateTempVoice(Guild, Member.DisplayName);
+			DiscordMember	Member		= await Guild.GetMemberAsync(Args.User.Id);
+			DiscordChannel	NewChannel	= await CreateTempVoice(Guild, Member.DisplayName);
 			
 			await Member.ModifyAsync(x => x.VoiceChannel = NewChannel);
 		}
@@ -71,8 +70,8 @@ public class CTemporaryVoicesService : CServiceBase
 	
 	private async Task<DiscordChannel> CreateTempVoice(DiscordGuild Guild, string MemberName)
 	{
-		string         Name               = GenerateTempVoiceChannelName(MemberName);
-		DiscordChannel CreateVoiceChannel = Guild.GetChannel(CChannel.CreateVoice);
+		string			Name				= GenerateTempVoiceChannelName(MemberName);
+		DiscordChannel	CreateVoiceChannel	= Guild.GetChannel(CChannel.CreateVoice);
 
 		return await Guild.CreateVoiceChannelAsync(Name, Guild.GetChannel(CCategory.VoiceChannels), null, CreateVoiceChannel.UserLimit);
 	}
